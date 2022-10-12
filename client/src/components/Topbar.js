@@ -1,6 +1,6 @@
-import "../../static/css/main.css";
-import "../../static/css/css.css";
-import "../../static/css/css1.css";
+import "../static/css/main.css";
+import "../static/css/css.css";
+import "../static/css/css1.css";
 import "uikit/dist/js/uikit.js"
 
 export default function Topbar() {
@@ -14,14 +14,14 @@ export default function Topbar() {
                 Recipe
               </a>
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
+                <li>
+                  <a href="/Home">Home</a>
+                </li>
+                <li>                  
+                  <a href="/Recipe">Recipe</a>
+                </li>
                 <li className="uk-active">
-                  <a href="home.html">Home</a>
-                </li>
-                <li>
-                  <a href="recipe.html">Recipe</a>
-                </li>
-                <li>
-                  <a href="search.html">Search</a>
+                  <a href="/Search">Search</a>
                 </li>
                 <li>
                   <a href="contact.html">Contact</a>
@@ -29,22 +29,6 @@ export default function Topbar() {
               </ul>
             </div>
             <div className="uk-navbar-right">
-              <div>
-                <a className="uk-navbar-toggle" data-uk-search-icon href="#" />
-                <div
-                  className="uk-drop uk-background-default"
-                  data-uk-drop="mode: click; pos: left-center; offset: 0"
-                >
-                  <form className="uk-search uk-search-navbar uk-width-1-1">
-                    <input
-                      className="uk-search-input uk-text-demi-bold"
-                      type="search"
-                      placeholder="Search..."
-                      autofocus
-                    />
-                  </form>
-                </div>
-              </div>
               <ul className="uk-navbar-nav uk-visible@m">
                 <li>
                   <a href="sign-in.html">Sign In</a>
