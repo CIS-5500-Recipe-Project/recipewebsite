@@ -1,6 +1,7 @@
 import "../../static/css/main.css";
 import "../../static/css/css.css";
 import "../../static/css/css1.css";
+import "uikit/dist/js/uikit.js"
 
 export default function Topbar() {
   return (
@@ -10,11 +11,11 @@ export default function Topbar() {
           <div className="uk-position-z-index" data-uk-navbar>
             <div className="uk-navbar-left">
               <a className="uk-navbar-item uk-logo" href>
-                Kocina
+                Recipe
               </a>
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
                 <li className="uk-active">
-                  <a href>Home</a>
+                  <a href="home.html">Home</a>
                 </li>
                 <li>
                   <a href="recipe.html">Recipe</a>
