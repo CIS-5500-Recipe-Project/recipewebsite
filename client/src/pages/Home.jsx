@@ -4,8 +4,6 @@ export default function Home() {
     <div>
       <Topbar/>
     </div>
-
-
   );
 }
 
