@@ -1,11 +1,10 @@
-
-
-import Search from "./pages/Search";
+import Home from "./pages/Home";
 
 function App() {
   return (
     //this is a test
-    <Search/>
+
+    <Home/>
   );
 }
 
