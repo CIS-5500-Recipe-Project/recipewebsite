@@ -1,5 +1,5 @@
 import Topbar from"../components/Topbar";
-export default function Home() {
+export default function Search() {
   return (
     <div>
       <Topbar/>
@@ -72,8 +72,7 @@ export default function Home() {
             <div data-uk-grid="">
               <div class="uk-width-expand@m">
                 <form class="uk-search uk-search-default uk-width-1-1">
-                  <span data-uk-search-icon=""></span
-                  ><input
+                  <span data-uk-search-icon=""></span><input
                     class="uk-search-input uk-text-small uk-border-rounded uk-form-large"
                     type="search"
                     placeholder="Search for recipes..."
@@ -124,9 +123,8 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">5.0</span
-                        ><span>(73)</span>
+                          ></span><span class="uk-margin-xsmall-left">5.0</span>
+                          <span>(73)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by John Keller
@@ -166,9 +164,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">3.0</span
-                        ><span>(94)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">3.0</span>
+                          <span>(94)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Danial Caleem
@@ -208,9 +206,8 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">4.5</span
-                        ><span>(153)</span>
+                          ></span><span class="uk-margin-xsmall-left">4.5</span>
+                          <span>(153)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Janet Small
@@ -250,9 +247,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">5.0</span
-                        ><span>(524)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">5.0</span>
+                          <span>(524)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Aleaxa Dorchest
@@ -292,9 +289,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">4.6</span
-                        ><span>(404)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">4.6</span>
+                          <span>(404)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Ben Kaller
@@ -334,9 +331,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">3.9</span
-                        ><span>(629)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">3.9</span>
+                          <span>(629)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Sam Brown
@@ -376,9 +373,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">3.6</span
-                        ><span>(149)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">3.6</span>
+                          <span>(149)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Theresa Samuel
@@ -418,9 +415,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">2.9</span
-                        ><span>(309)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">2.9</span>
+                          <span>(309)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Adam Brown
@@ -460,9 +457,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">3.6</span
-                        ><span>(124)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">3.6</span>
+                          <span>(124)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Thomas Haller
@@ -502,9 +499,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">4.0</span
-                        ><span>(84)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">4.0</span>
+                          <span>(84)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Thomas Haller
@@ -544,9 +541,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">2.9</span
-                        ><span>(311)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">2.9</span>
+                          <span>(311)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Thomas Haller
@@ -586,9 +583,9 @@ export default function Home() {
                         <span
                           class="uk-rating-filled"
                           data-uk-icon="icon: star; ratio: 0.7"
-                        ></span
-                        ><span class="uk-margin-xsmall-left">4.4</span
-                        ><span>(68)</span>
+                          ></span>
+                          <span class="uk-margin-xsmall-left">4.4</span>
+                          <span>(68)</span>
                       </div>
                       <div class="uk-width-expand uk-text-right">
                         by Thomas Haller
@@ -621,7 +618,6 @@ export default function Home() {
       </div>
     </div>
     </div>
-
 
   );
 }
