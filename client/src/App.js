@@ -1,9 +1,9 @@
-import Home from "./pages/Home";
+import Recipe from "./pages/Recipe";
 
 function App() {
   return (
     //this is a test
-      <Home />
+      <Recipe />
   );
 }
 
