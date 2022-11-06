@@ -1,78 +1,30 @@
-import Topbar from"../components/Topbar";
-export default function Search() {
+import Topbar from "../components/Topbar";
 
-  const recipesType = ["Breakfast & Brunch", "Lunch", "Appetizers & Snack", "Dinner", "Dessert", "Drink & Cocktail",
-                    "Side Dish", "Grilling & BBQ", "Microwave", "Quick & Easy", "Slow-Cooker", "Air Fryer", "Instant Pot",
-                    "Backing"];
-  const healthyAndDietType = ["Keto", "Healthy", "Vegetarian", "Vegan", "Mediterranean Diet", "Weight Watchers",
-                              "Low-Carb", "Gluten-Free"];
-  const worldCusineType = ["Mexican", "Italian", "Indian", "Thai", "Korean", "French", "Chinese", "Japanese", "Spannish"]; 
-  const seasonalType = ["Spring", "Summer", "Fall", "Winter"];
-  const holidayType = ["Valentine's Day", "St. Patrick's Day", "Easter", "Mother's Day", "Meomorial Day", "4th of July",
-                        "Halloween", "Thanksgiving", "Christmas", "New Year's"]
-  const specialOccasionsType = ["Dinner Party", "Game Day", "Baby Shower", "Wedding", "Birthday Party", "Graduation"]
-                  
-
+export default function User() {
   return (
     <div>
       <Topbar/>
+      <div class = "uk-container">
+        <h3 className="uk-visible@m" href>
+            Welcome Back Sijia Yang
+        </h3>
+      </div>
+      
       <div class="uk-section uk-section-default uk-padding-remove-top">
       <div class="uk-container">
         <div data-uk-grid="">
           <div class="uk-width-1-4@m sticky-container">
             <div data-uk-sticky="offset: 100; bottom: true; media: @m;">
-              <h2>Recipes</h2>
+              
               <ul
-                class="uk-nav-default uk-nav-parent-icon uk-nav-filter uk-margin-medium-top"
+                class="uk-nav-default uk-nav-filter uk-margin-medium-top"
                 data-uk-nav=""
               >
                 <li class="uk-parent">
-                  <a href="#">Recipes</a>
-                  <ul class="uk-nav-sub">
-                    {recipesType.map(function(recipesType,index){
-                      return <li key = {index}><a href ="#">{recipesType} Recipes</a></li>
-                    })}
-                  </ul>
+                  <a href="#">My Recipes</a>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Healthy and Diet</a>
-                  <ul class="uk-nav-sub">
-                    {healthyAndDietType.map(function(healthyAndDietType,index){
-                        return <li key = {index}><a href ="#">{healthyAndDietType} Recipes</a></li>
-                      })}
-                  </ul>
-                </li>
-                <li class="uk-parent">
-                  <a href="#">Holidays</a>
-                  <ul class="uk-nav-sub">
-                    {holidayType.map(function(holidayType,index){
-                          return <li key = {index}><a href ="#">{holidayType} Recipes</a></li>
-                        })}
-                  </ul>
-                </li>
-                <li class="uk-parent">
-                  <a href="#">World Cuisine</a>
-                  <ul class="uk-nav-sub">
-                    {worldCusineType.map(function(worldCusineType,index){
-                          return <li key = {index}><a href ="#">{worldCusineType} Recipes</a></li>
-                        })}
-                  </ul>
-                </li>
-                <li class="uk-parent">
-                  <a href="#">Seasonal</a>
-                  <ul class="uk-nav-sub">
-                    {seasonalType.map(function(seasonalType,index){
-                            return <li key = {index}><a href ="#">{seasonalType} Recipes</a></li>
-                          })}
-                  </ul>
-                </li>
-                <li class="uk-parent">
-                  <a href="#">Special Occasions</a>
-                  <ul class="uk-nav-sub">
-                    {specialOccasionsType.map(function(specialOccasionsType,index){
-                            return <li key = {index}><a href ="#">{specialOccasionsType} Recipes</a></li>
-                          })}
-                  </ul>
+                  <a href="#">My Favorites</a>
                 </li>
               </ul>
             </div>
@@ -80,13 +32,7 @@ export default function Search() {
           <div class="uk-width-expand@m">
             <div data-uk-grid="">
               <div class="uk-width-expand@m">
-                <form class="uk-search uk-search-default uk-width-1-1">
-                  <span data-uk-search-icon=""></span><input
-                    class="uk-search-input uk-text-small uk-border-rounded uk-form-large"
-                    type="search"
-                    placeholder="Search for recipes..."
-                  />
-                </form>
+                
               </div>
               <div class="uk-width-1-3@m uk-text-right@m uk-light">
                 <select
@@ -627,6 +573,5 @@ export default function Search() {
       </div>
     </div>
   </div>
-
   );
 }
