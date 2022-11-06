@@ -1,5 +1,18 @@
 import Topbar from"../components/Topbar";
 export default function Search() {
+
+  const recipesType = ["Breakfast & Brunch", "Lunch", "Appetizers & Snack", "Dinner", "Dessert", "Drink & Cocktail",
+                    "Side Dish", "Grilling & BBQ", "Microwave", "Quick & Easy", "Slow-Cooker", "Air Fryer", "Instant Pot",
+                    "Backing"];
+  const healthyAndDietType = ["Keto", "Healthy", "Vegetarian", "Vegan", "Mediterranean Diet", "Weight Watchers",
+                              "Low-Carb", "Gluten-Free"];
+  const worldCusineType = ["Mexican", "Italian", "Indian", "Thai", "Korean", "French", "Chinese", "Japanese", "Spannish"]; 
+  const seasonalType = ["Spring", "Summer", "Fall", "Winter"];
+  const holidayType = ["Valentine's Day", "St. Patrick's Day", "Easter", "Mother's Day", "Meomorial Day", "4th of July",
+                        "Halloween", "Thanksgiving", "Christmas", "New Year's"]
+  const specialOccasionsType = ["Dinner Party", "Game Day", "Baby Shower", "Wedding", "Birthday Party", "Graduation"]
+                  
+
   return (
     <div>
       <Topbar/>
@@ -14,55 +27,51 @@ export default function Search() {
                 data-uk-nav=""
               >
                 <li class="uk-parent">
-                  <a href="#">Dish Type</a>
+                  <a href="#">Recipes</a>
                   <ul class="uk-nav-sub">
-                    <li><a href="#">Appetizers & Snacks</a></li>
-                    <li><a href="#">Bread Recipes</a></li>
-                    <li><a href="#">Cake Recipes</a></li>
-                    <li><a href="#">Candy and Fudge</a></li>
-                    <li><a href="#">Casserole Recipes</a></li>
-                    <li><a href="#">Christmas Cookies</a></li>
-                    <li><a href="#">Cocktail Recipes</a></li>
-                    <li><a href="#">Main Dishes</a></li>
-                    <li><a href="#">Pasta Recipes</a></li>
-                    <li><a href="#">Pie Recipes</a></li>
-                    <li><a href="#">Sandwiches</a></li>
+                    {recipesType.map(function(recipesType,index){
+                      return <li key = {index}><a href ="#">{recipesType} Recipes</a></li>
+                    })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Meal Type</a>
+                  <a href="#">Healthy and Diet</a>
                   <ul class="uk-nav-sub">
-                    <li><a href="#">Breakfast and Brunch</a></li>
-                    <li><a href="#">Desserts</a></li>
-                    <li><a href="#">Dinners</a></li>
-                    <li><a href="#">Lunch</a></li>
+                    {healthyAndDietType.map(function(healthyAndDietType,index){
+                        return <li key = {index}><a href ="#">{healthyAndDietType} Recipes</a></li>
+                      })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Diet and Health</a>
+                  <a href="#">Holidays</a>
                   <ul class="uk-nav-sub">
-                    <li><a href="#">Diabetic</a></li>
-                    <li><a href="#">Gluten Free</a></li>
-                    <li><a href="#">High Fiber Recipes</a></li>
-                    <li><a href="#">Low Calorie</a></li>
+                    {holidayType.map(function(holidayType,index){
+                          return <li key = {index}><a href ="#">{holidayType} Recipes</a></li>
+                        })}
                   </ul>
                 </li>
                 <li class="uk-parent">
                   <a href="#">World Cuisine</a>
                   <ul class="uk-nav-sub">
-                    <li><a href="#">Chinese</a></li>
-                    <li><a href="#">Indian</a></li>
-                    <li><a href="#">Italian</a></li>
-                    <li><a href="#">Mexican</a></li>
+                    {worldCusineType.map(function(worldCusineType,index){
+                          return <li key = {index}><a href ="#">{worldCusineType} Recipes</a></li>
+                        })}
                   </ul>
                 </li>
                 <li class="uk-parent">
                   <a href="#">Seasonal</a>
                   <ul class="uk-nav-sub">
-                    <li><a href="#">Baby Shower</a></li>
-                    <li><a href="#">Birthday</a></li>
-                    <li><a href="#">Christmas</a></li>
-                    <li><a href="#">Halloween</a></li>
+                    {seasonalType.map(function(seasonalType,index){
+                            return <li key = {index}><a href ="#">{seasonalType} Recipes</a></li>
+                          })}
+                  </ul>
+                </li>
+                <li class="uk-parent">
+                  <a href="#">Special Occasions</a>
+                  <ul class="uk-nav-sub">
+                    {specialOccasionsType.map(function(specialOccasionsType,index){
+                            return <li key = {index}><a href ="#">{specialOccasionsType} Recipes</a></li>
+                          })}
                   </ul>
                 </li>
               </ul>
