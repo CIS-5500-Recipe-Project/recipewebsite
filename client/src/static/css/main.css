@@ -96,7 +96,7 @@ video {
   height: auto; /* 3 */
   box-sizing: border-box;
 } /* 4 */
-@supports (display: block) {
+/*@supports (display: block) {
   svg {
     max-width: 100%;
     height: auto;
