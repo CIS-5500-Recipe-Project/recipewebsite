@@ -128,8 +128,7 @@ export default function RecipeContent() {
                             </a>
                           </p>
                           <Rating name="half-rating-read" value={3.5} precision={0.1} readOnly />                         
-                        </div>
-                        
+                        </div>                        
                       </div>
                     </header>
                     <div class="uk-comment-body">
@@ -146,8 +145,10 @@ export default function RecipeContent() {
 
                 </li>
               </ul>
-              <div class ="uk-margin-medium-top uk-margin-medium-bottom">
-                <TextField fullWidth id="outlined-textarea" label="Share your comment" placeholder="Placeholder" multiline/>
+              <hr class="uk-margin-medium-top" />
+              <h3>Leave your comment</h3>
+              <div class ="uk-margin-medium-bottom">
+                <TextField fullWidth id="outlined-textarea" label="Leave your comment..." placeholder="Placeholder" multiline/>
               </div>
               <button class="uk-button uk-button-default">Submit</button>
             </div>
