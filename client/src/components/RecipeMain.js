@@ -53,30 +53,11 @@ export default function RecipeMain() {
             <hr />
             <div data-uk-grid="">
               <div class="uk-width-auto@s uk-text-small">
+                <span class="uk-label">Lunch/Snacks</span>
                 <p class="uk-margin-small-top uk-margin-remove-bottom">
                   Created by <a href="#">Alex Williamns</a>
                 </p>
                 <span class="uk-text-muted">21 recipes</span>
-              </div>
-              <div class="uk-width-expand@s uk-flex uk-flex-middle uk-flex-right@s">
-                <a
-                  href="#"
-                  class="uk-icon-link"
-                  data-uk-icon="icon: plus-circle; ratio: 1.2"
-                  data-uk-tooltip="title: Save Recipe"
-                ></a>
-                <a
-                  href="#"
-                  class="uk-icon-link uk-margin-left"
-                  data-uk-icon="icon: cart; ratio: 1.2"
-                  data-uk-tooltip="title: Shopping List"
-                ></a>
-                <a
-                  href="#"
-                  class="uk-icon-link uk-margin-left"
-                  data-uk-icon="icon: print; ratio: 1.2"
-                  data-uk-tooltip="title: Print Recipe"
-                ></a>
               </div>
             </div>
           </div>

@@ -2,9 +2,12 @@ import "../static/css/main.css";
 import "../static/css/css.css";
 import "../static/css/css1.css";
 import "uikit/dist/js/uikit.js";
+import Rating from '@mui/material/Rating';
+import TextField from '@mui/material/TextField';
 
 export default function RecipeContent() {
   return (
+    
     <div class="uk-section uk-section-default">
       <div class="uk-container uk-container-small">
         <div class="uk-grid-large" data-uk-grid="">
@@ -101,14 +104,13 @@ export default function RecipeContent() {
                   <article class="uk-comment uk-visible-toggle" tabindex="-1">
                     <header class="uk-comment-header uk-position-relative">
                       <div
-
                         class="uk-grid-medium uk-flex-middle"
                         data-uk-grid=""
                       >
                         <div class="uk-width-auto">
                           <img
                             class="uk-comment-avatar uk-border-circle"
-                            src="static/picture/100x100.jpg"
+                            src="https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
                             width="50"
                             height="50"
                             alt="Alice Thomson"
@@ -125,26 +127,9 @@ export default function RecipeContent() {
                               12 days ago
                             </a>
                           </p>
-                          <div class="uk-rating">
-                            <span
-                              class="uk-rating-filled"
-                              data-uk-icon="icon: star; ratio: 0.8"
-                            ></span>
-                            <span
-                              class="uk-rating-filled"
-                              data-uk-icon="icon: star; ratio: 0.8"
-                            ></span>
-                            <span
-                              class="uk-rating-filled"
-                              data-uk-icon="icon: star; ratio: 0.8"
-                            ></span>
-                            <span
-                              class="uk-rating-filled"
-                              data-uk-icon="icon: star; ratio: 0.8"
-                            ></span>
-                            <span data-uk-icon="icon: star; ratio: 0.8"></span>
-                          </div>
+                          <Rating name="half-rating-read" value={3.5} precision={0.1} readOnly />                         
                         </div>
+                        
                       </div>
                     </header>
                     <div class="uk-comment-body">
@@ -161,6 +146,10 @@ export default function RecipeContent() {
 
                 </li>
               </ul>
+              <div class ="uk-margin-medium-top uk-margin-medium-bottom">
+                <TextField fullWidth id="outlined-textarea" label="Share your comment" placeholder="Placeholder" multiline/>
+              </div>
+              <button class="uk-button uk-button-default">Submit</button>
             </div>
           </div>
           <div class="uk-width-1-3@m">
@@ -191,35 +180,6 @@ export default function RecipeContent() {
               <a class="uk-display-inline-block" href="#">
                 <span class="uk-label uk-label-light">meat</span>
               </a>
-            </div>
-            <h3 class="uk-margin-large-top">Share Recipe</h3>
-            <div class="uk-margin-medium-top">
-              <div data-uk-grid="" class="uk-child-width-auto uk-grid-small">
-                <div>
-                  <a
-                    href="#"
-                    data-uk-icon="icon: facebook; ratio: 0.9"
-                    class="uk-icon-button facebook"
-                    target="_blank"
-                  ></a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    data-uk-icon="icon: linkedin; ratio: 0.9"
-                    class="uk-icon-button linkedin"
-                    target="_blank"
-                  ></a>
-                </div>
-                <div>
-                  <a
-                    href="#"
-                    data-uk-icon="icon: twitter; ratio: 0.9"
-                    class="uk-icon-button twitter"
-                    target="_blank"
-                  ></a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
