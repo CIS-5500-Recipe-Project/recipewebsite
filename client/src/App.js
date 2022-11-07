@@ -1,9 +1,9 @@
-import Search from "./pages/Search";
+import Recipes from "./pages/Recipes";
 
 function App() {
   return (
     //this is a test
-      <Search />
+      <Recipes />
   );
 }
 
