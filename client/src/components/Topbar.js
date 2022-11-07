@@ -1,7 +1,8 @@
 import "../static/css/main.css";
 import "../static/css/css.css";
 import "../static/css/css1.css";
-import "uikit/dist/js/uikit.js"
+import "uikit/dist/js/uikit.js";
+import { Link } from 'react-router-dom';
 
 export default function Topbar() {
   return (
@@ -18,7 +19,7 @@ export default function Topbar() {
                   <a href="/Home">Home</a>
                 </li>
                 <li>                  
-                  <a href="/Recipe">Recipe</a>
+                  <a href="/Recipe">Recipes</a>
                 </li>
                 <li className="uk-active">
                   <a href="/Search">Search</a>
