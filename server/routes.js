@@ -20,7 +20,6 @@ connection.connect();
 // Route 1 Individual Recipe
 // TODO: fill in query to grab info regarding specific recipe 
 async function recipes(req, res) {
-
     var inputDescription = req.query.attribute ? req.query.attribute : ""
     var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
     FROM recipes
@@ -34,12 +33,15 @@ async function recipes(req, res) {
     ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
     LIMIT 50`
 
+    var queryAll = `SELECT *
+    FROM recipes LIMIT 50`
+
 
     // http://localhost:8080/recipes/description?decription=summer
     // http://localhost:8080/recipes/description?decription=vegan
     if (req.params.choice === 'description') {
 
-        connection.query(queryDescription, function(err, results, fields) {
+        connection.query(queryDescription, function (err, results, fields) {
             if (err) console.log(err);
             else {
                 console.log(results);
@@ -48,7 +50,7 @@ async function recipes(req, res) {
         })
     } else if (req.params.choice === 'keyword') { // http://localhost:8080/recipes/keyword?keyword=kid
 
-        connection.query(queryKeyword, function(err, results, fields) {
+        connection.query(queryKeyword, function (err, results, fields) {
             if (err) console.log(err);
             else {
                 console.log(results);
@@ -56,13 +58,32 @@ async function recipes(req, res) {
             }
         })
 
+    } else {
+        connection.query(queryAll, function (err, results, fields) {
+            if (err) console.log(err);
+            else {
+                res.json(results)
+            }
+        })
+
     }
 
-
-    
-
-    
 }
+
+// async function search_images(req, res) {
+//     //TODO: match to images of specific recipe id
+//     const recipeId = req.params.RecipeId ? req.params.RecipeId : -1
+//     connection.query(`SELECT Images
+//         FROM recipes
+//         WHERE RecipeId = '${recipeId}'`, function (error, results, fields) {
+//         if (error) {
+//             console.log(error)
+//             res.json({ error: error })
+//         } else if (results) {
+//             res.json({ results: results })
+//         }
+//     })
+// }
 
 // Route 2 
 // TODO: 

@@ -18,7 +18,7 @@ export default function Topbar() {
                 <li>
                   <a href="/Home">Home</a>
                 </li>
-                <li>                  
+                <li>
                   <a href="/Recipe">Recipes</a>
                 </li>
                 <li className="uk-active">

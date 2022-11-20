@@ -1,5 +1,6 @@
 import Topbar from"../components/Topbar";
 import Bottombar from "../components/Bottombar"
+import { getRecipes } from '../fetcher'
 export default function Recipes() {
 
   const recipesType = ["Breakfast & Brunch", "Lunch", "Appetizers & Snack", "Dinner", "Dessert", "Drink & Cocktail",
@@ -12,7 +13,7 @@ export default function Recipes() {
   const holidayType = ["Valentine's Day", "St. Patrick's Day", "Easter", "Mother's Day", "Meomorial Day", "4th of July",
                         "Halloween", "Thanksgiving", "Christmas", "New Year's"]
   const specialOccasionsType = ["Dinner Party", "Game Day", "Baby Shower", "Wedding", "Birthday Party", "Graduation"]
-                  
+ 
 
   return (
     <div>
