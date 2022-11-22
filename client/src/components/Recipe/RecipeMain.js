@@ -1,18 +1,26 @@
-import "../static/css/main.css";
-import "../static/css/css.css";
-import "../static/css/css1.css";
+import "../css/main.css";
+import "../css/css.css";
+import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
-import Rating from '@mui/material/Rating';
-import Card from '@mui/material/Card';
-import { CardContent, CardActionArea, Typography, CardMedia, Modal, Box } from "@mui/material";
-import React, { useState, useEffect } from 'react';
+import Rating from "@mui/material/Rating";
+import Card from "@mui/material/Card";
+import {
+  CardContent,
+  CardActionArea,
+  Typography,
+  CardMedia,
+  Modal,
+  Box,
+} from "@mui/material";
+import React, { useState, useEffect } from "react";
 
 export default function RecipeMain({ recipes }) {
+  console.log(recipes);
   const imgs = recipes[0].Images.split("\n");
-  console.log(imgs[3].replace(/'/g, ""));
-  console.log(recipes[2])
-  console.log(recipes[2].Images.split("\n")[1]);
-  console.log(recipes[0].PrepTime.replace(/^[0-9]+$/))
+  // console.log(imgs[3].replace(/'/g, ""));
+  // console.log(recipes[2]);
+  // console.log(recipes[2].Images.split("\n")[1]);
+  // console.log(recipes[0].PrepTime.replace(/^[0-9]+$/));
   // const [show, setShow] = useState(false);
   // const handleClose = () => setShow(false);
   // const handleOpen = () => setShow(true);
@@ -34,7 +42,12 @@ export default function RecipeMain({ recipes }) {
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Overall Rating
-                    <Rating name="Overall Rating" value={recipes[0].AggregatedRating} precision={0.1} readOnly />
+                    <Rating
+                      name="Overall Rating"
+                      value={recipes[0].AggregatedRating}
+                      precision={0.1}
+                      readOnly
+                    />
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {recipes[0].Description}
@@ -72,9 +85,7 @@ export default function RecipeMain({ recipes }) {
         <div class="uk-width-expand@s uk-flex uk-flex-middle">
           <div>
             <h1>{recipes[0].Name}</h1>
-            <p>
-              {recipes[0].Description}
-            </p>
+            <p>{recipes[0].Description}</p>
             <div
               class="uk-margin-medium-top uk-child-width-expand uk-text-center uk-grid-divider"
               data-uk-grid=""
@@ -84,21 +95,27 @@ export default function RecipeMain({ recipes }) {
                 <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">
                   Prep Time
                 </h5>
-                <span class="uk-text-small">{recipes[0].PrepTime.split(":")[1]} mins</span>
+                <span class="uk-text-small">
+                  {recipes[0].PrepTime.split(":")[1]} mins
+                </span>
               </div>
               <div>
                 <span data-uk-icon="icon: future; ratio: 1.4"></span>
                 <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">
                   Total Time
                 </h5>
-                <span class="uk-text-small">{recipes[0].TotalTime.split(":")[1]} mins</span>
+                <span class="uk-text-small">
+                  {recipes[0].TotalTime.split(":")[1]} mins
+                </span>
               </div>
               <div>
                 <span data-uk-icon="icon: users; ratio: 1.4"></span>
                 <h5 class="uk-text-500 uk-margin-small-top uk-margin-remove-bottom">
                   Yield
                 </h5>
-                <span class="uk-text-small">Serves {recipes[0].RecipeServings}</span>
+                <span class="uk-text-small">
+                  Serves {recipes[0].RecipeServings}
+                </span>
               </div>
             </div>
             <hr />
