@@ -1,19 +1,18 @@
-import "../static/css/main.css";
-import "../static/css/css.css";
-import "../static/css/css1.css";
+import "../css/main.css";
+import "../css/css.css";
+import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
-import Rating from '@mui/material/Rating';
-import TextField from '@mui/material/TextField';
-
+import Rating from "@mui/material/Rating";
+import TextField from "@mui/material/TextField";
 
 export default function RecipeContent({ recipes }) {
-  const instructions = recipes[0].RecipeInstructions.split('\n')
-  const ingredients = recipes[0].ingredient.split(',')
-  const tags = recipes[0].Keywords.replace(/[^a-z0-9, ]/gi, '').split(' ')
-  console.log(typeof tags)
-  console.log(tags)
+  const instructions = recipes[0].RecipeInstructions.split("\n");
+  const ingredients = recipes[0].ingredient.split(",");
+  const tags = recipes[0].Keywords.replace(/[^a-z0-9, ]/gi, "").split(" ");
+  console.log(typeof tags);
+  console.log(tags);
   return (
-    < div class="uk-section uk-section-default" >
+    <div class="uk-section uk-section-default">
       <div class="uk-container uk-container-small">
         <div class="uk-grid-large" data-uk-grid="">
           <div class="uk-width-expand@m">
@@ -21,7 +20,11 @@ export default function RecipeContent({ recipes }) {
               <h3>How to Make It</h3>
               {instructions.map((instruction, key) => (
                 <>
-                  <div id={key} class="uk-grid-small uk-margin-medium-top" data-uk-grid="">
+                  <div
+                    id={key}
+                    class="uk-grid-small uk-margin-medium-top"
+                    data-uk-grid=""
+                  >
                     <div class="uk-width-expand">
                       <h5
                         className="uk-step-title uk-text-500 uk-text-uppercase uk-text-primary"
@@ -30,7 +33,7 @@ export default function RecipeContent({ recipes }) {
                         {key + 1}. STEP
                       </h5>
                       <div className="uk-step-content">
-                        {instruction.replace(/[^a-z0-9, ]/gi, '')}
+                        {instruction.replace(/[^a-z0-9, ]/gi, "")}
                       </div>
                     </div>
                   </div>
@@ -67,7 +70,12 @@ export default function RecipeContent({ recipes }) {
                               12 days ago
                             </a>
                           </p>
-                          <Rating name="half-rating-read" value={3.5} precision={0.1} readOnly />
+                          <Rating
+                            name="half-rating-read"
+                            value={3.5}
+                            precision={0.1}
+                            readOnly
+                          />
                         </div>
                       </div>
                     </header>
@@ -82,13 +90,18 @@ export default function RecipeContent({ recipes }) {
                       </p>
                     </div>
                   </article>
-
                 </li>
               </ul>
               <hr class="uk-margin-medium-top" />
               <h3>Leave your comment</h3>
               <div class="uk-margin-medium-bottom">
-                <TextField fullWidth id="outlined-textarea" label="Leave your comment..." placeholder="Placeholder" multiline />
+                <TextField
+                  fullWidth
+                  id="outlined-textarea"
+                  label="Leave your comment..."
+                  placeholder="Placeholder"
+                  multiline
+                />
               </div>
               <button class="uk-button uk-button-default">Submit</button>
             </div>
@@ -97,18 +110,22 @@ export default function RecipeContent({ recipes }) {
             <h3>Ingredients</h3>
             <ul class="uk-list uk-list-large uk-list-divider uk-margin-medium-top">
               {ingredients.map((ingredient, key) => (
-                <li>{ingredient.replace(/[^a-z0-9, ]/gi, '')}</li>
+                <li>{ingredient.replace(/[^a-z0-9, ]/gi, "")}</li>
               ))}
             </ul>
             <h3 class="uk-margin-large-top">Tags</h3>
             <div class="uk-margin-medium-top" data-uk-margin="">
-              {tags.map((tag) => (<a class="uk-display-inline-block" href="#">
-                <span class="uk-label uk-label-light">{tag.replace(/'(.*?)'/g)}</span>
-              </a>))}
+              {tags.map((tag) => (
+                <a class="uk-display-inline-block" href="#">
+                  <span class="uk-label uk-label-light">
+                    {tag.replace(/'(.*?)'/g)}
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
