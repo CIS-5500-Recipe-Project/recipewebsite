@@ -1,7 +1,7 @@
-import "../static/css/main.css";
-import "../static/css/css.css";
-import "../static/css/css1.css";
-import "uikit/dist/js/uikit.js"
+import "./css/main.css";
+import "./css/css.css";
+import "./css/css1.css";
+import "uikit/dist/js/uikit.js";
 
 export default function Topbar() {
   return (
@@ -17,7 +17,7 @@ export default function Topbar() {
                 <li>
                   <a href="/Home">Home</a>
                 </li>
-                <li>                  
+                <li>
                   <a href="/Recipe">Recipe</a>
                 </li>
                 <li className="uk-active">
