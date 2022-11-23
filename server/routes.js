@@ -19,7 +19,11 @@ connection.connect();
 // Route 1 Individual Recipe
 // TODO: fill in query to grab info regarding specific recipe
 async function recipes(req, res) {
-  var inputDescription = req.query.attribute ? req.query.attribute : "";
+
+  var inputDescription = req.query.attribute ? req.query.attribute: ""
+  var inputInt = parseInt(inputDescription)
+  //var inputInt = 45;
+
   var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
     FROM recipes
     WHERE Description LIKE '%${inputDescription}%'
@@ -32,8 +36,25 @@ async function recipes(req, res) {
     ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
     LIMIT 50`;
 
+  var queryId = `SELECT recipes.Name, recipes.CookTime, recipes.PrepTime, recipes.TotalTime,
+  recipes.DatePublished, recipes.Description,  recipes.AggregatedRating,
+  recipes.ReviewCount, recipes.Calories, recipes.FatContent, recipes.SaturatedFatContent,
+  recipes.CholesterolContent, recipes.SodiumContent, recipes.CarbohydrateContent,
+  recipes.fiberCOntent, recipes.SugarContent,recipes.RecipeYield,recipes.RecipeInstructions,
+  recipes.Images, recipes.ingredient,
+  AVG(reviews.Rating) as AvgRating, reviews.authorname,
+  COUNT(reviews.RecipeId) as Comment
+  from recipes
+  JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE recipes.RecipeId = ${inputDescription}`;
+
   var queryAll = `SELECT *
     FROM recipes LIMIT 50`;
+  
+  function extractColumn(arr, column) {
+    return arr.map(x => x[column])
+  }
+
 
   // http://localhost:8080/recipes/description?decription=summer
   // http://localhost:8080/recipes/description?decription=vegan
@@ -45,7 +66,7 @@ async function recipes(req, res) {
         res.json(results);
       }
     });
-  } else if (req.params.choice === "keyword") {
+  } else if (req.params.choice === "keyword") {  
     // http://localhost:8080/recipes/keyword?keyword=kid
 
     connection.query(queryKeyword, function (err, results, fields) {
@@ -55,10 +76,24 @@ async function recipes(req, res) {
         res.json(results);
       }
     });
-  } else {
+  } else if (req.params.choice === "id") {
+      // http://localhost:8080/recipes/id?id=45
+
+      connection.query(queryId, function (err, results, fields) {
+        if (err) {console.log(err); console.log(typeof inputDescription); console.log(inputInt); }
+        else {
+
+          console.log(results);
+          res.json(results);
+        }
+      });
+
+  }
+  else {
     connection.query(queryAll, function (err, results, fields) {
       if (err) console.log(err);
       else {
+        console.log(results);
         res.json(results);
       }
     });
@@ -133,5 +168,6 @@ async function searchCount(req, res) {
     }
   });
 }
+
 
 module.exports = { recipes, pageTwo, search, searchCount };
