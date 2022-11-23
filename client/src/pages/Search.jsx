@@ -50,6 +50,10 @@ export default function Search() {
     });
   };
 
+  const handleClick = (key) => { 
+    console.log("Clicked: " + key);
+  }
+
   return (
     <div>
       <Topbar />
@@ -96,9 +100,11 @@ export default function Search() {
             class="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-margin-medium-top"
             data-uk-grid=""
           >
-            {result.map((ele) => {
+            {result.map((ele, index) => {
               return (
                 <ItemGrid
+                  key={index}
+                  onClick={()=>handleClick(index)}
                   name={ele.Name}
                   image={ele.Images}
                   rating={ele.AvgRating}
