@@ -10,21 +10,15 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 
-import ItemGrid from "./Search/ItemGrid";
+import ItemGrid from "../components/Search/ItemGrid";
+
+import dummy from "../components/dummy.json";
 
 export default function Search() {
   const [food, setFood] = useState(["egg"]);
 
   const [resultCount, setResultCount] = useState([12]);
-  const [result, setResult] = useState(
-    Array(12).fill({
-      Name: "Place Holder",
-      Images: '["static/picture/300x160.jpg"]',
-      AvgRating: 5,
-      Comment: 39,
-      Author: "Test",
-    })
-  );
+  const [result, setResult] = useState(Array(12).fill(dummy.search));
 
   // useEffect(() => {
   //   getFoodSearchCount(food).then((res) => {
@@ -40,10 +34,11 @@ export default function Search() {
   const handleSearch = (event, value) => {
     console.log("Running Search");
     getFoodSearchCount(food).then((res) => {
+      // console.log(res);
       setResultCount(res[0].Total);
     });
     getFoodSearch(food, 1, 12).then((res) => {
-      console.log(res);
+      // console.log(res);
       setResult(res);
     });
   };
