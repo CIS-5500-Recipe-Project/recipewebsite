@@ -1,8 +1,7 @@
-export default function ItemGrid({ name, image, rating, comment, author }) {
-  //   console.log(image.split("'"));
+export default function ItemGrid({ name, image, rating, comment, author, onClick}) {
   //   console.log(image.split("'")[1]);
   return (
-    <div>
+    <div onClick={onClick}>
       <div class="uk-card">
         <div class="uk-card-media-top uk-inline uk-light">
           <img

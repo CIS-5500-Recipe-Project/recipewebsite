@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 function App() {
   return (
     //this is a test
-    <Search />
+    <Recipe recipeId={102} />
   );
 }
 
