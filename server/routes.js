@@ -100,7 +100,7 @@ async function recipe(req, res) {
     WHERE RecipeId = ${x}`
 
     if (x) {
-        // http://localhost:3000/recipe/38
+        // http://localhost:8080/recipe/38
         connection.query(queryRecipeWithId, function (err, results, fields) {
             console.log(typeof req.params.recipeId);
             if (err) console.log(err);
@@ -159,4 +159,46 @@ async function searchCount(req, res) {
     });
 }
 
-module.exports = { recipe, recipes, pageTwo, search, searchCount };
+// route 5 - complex query: suggest a recipe 
+// for example, people who liked recipeId 54 also liked some other recipes
+// suggest the top 5 recipes
+
+async function recommendation(req, res) {
+
+  var x = parseInt(req.params.recipeId);
+
+  var complexQuery = `WITH review_authors AS (
+    select AuthorId
+    FROM reviews 
+    where RecipeId = ${x}
+    ),
+    other_recipes AS (
+    select RecipeId 
+    FROM reviews 
+    WHERE AuthorId in (select * from review_authors)
+    ),
+    recipe_category AS (
+    SELECT RecipeCategory AS category
+    FROM recipes
+    where RecipeID = ${x}
+    )
+    select * 
+    from recipes 
+    where RecipeId in (select * from other_recipes) AND RecipeId <> ${x} AND  RecipeCategory = (select * from recipe_category) 
+    order by ReviewCount desc 
+    limit 5;`
+
+  if (x) {
+      // http://localhost:8080/recommendation/54
+      connection.query(complexQuery, function (err, results, fields) {
+
+          if (err) console.log(err);
+          else {
+              console.log(results);
+              res.json(results);
+          }
+      })
+  }
+}
+
+module.exports = { recipe, recipes, pageTwo, search, searchCount, recommendation };
