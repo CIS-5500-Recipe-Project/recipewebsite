@@ -1,4 +1,4 @@
-import config from "./config.json";
+import { config } from './config';
 
 const getFoodSearch = async (keyword, page, pagesize) => {
   var res = await fetch(
