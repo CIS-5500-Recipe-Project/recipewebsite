@@ -1,6 +1,6 @@
-import "../static/css/main.css";
-import "../static/css/css.css";
-import "../static/css/css1.css";
+import "../css/main.css";
+import "../css/css.css";
+import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import Rating from '@mui/material/Rating';
 import Card from '@mui/material/Card';
