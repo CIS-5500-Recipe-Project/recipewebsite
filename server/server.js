@@ -26,10 +26,18 @@ app.get("/pageTwo", routes.pageTwo);
 app.get("/search/:keyword", routes.search);
 app.get("/searchcount/:keyword", routes.searchCount);
 
+//complex query
+app.get("/recommendation/:recipeId", routes.recommendation);
+
 app.listen(config.server_port, () => {
     console.log(
         `Server running at http://${config.server_host}:${config.server_port}/`
     );
 });
+
+
+
+
+
 
 module.exports = app;
