@@ -1,6 +1,5 @@
 import Topbar from"../components/Topbar";
 import Bottombar from "../components/Bottombar"
-import { getRecipes } from '../fetcher'
 export default function Recipes() {
 
   const recipesType = ["Breakfast & Brunch", "Lunch", "Appetizers & Snack", "Dinner", "Dessert", "Drink & Cocktail",
