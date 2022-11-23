@@ -7,6 +7,13 @@ const getRecipes = async (choice) => {
     return res.json()
 }
 
+const getRecipeById = async (recipeId) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipe/${recipeId}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 const getDefaultRecipes = async () => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes`, {
         method: 'GET',
@@ -14,6 +21,6 @@ const getDefaultRecipes = async () => {
     return res.json()
 }
 
-export { getDefaultRecipes };
+export { getDefaultRecipes, getRecipeById };
 
 // http://127.0.0.1:8080/recipes
