@@ -1,10 +1,9 @@
-import "../static/css/main.css";
-import "../static/css/css.css";
-import "../static/css/css1.css";
+import "../css/main.css";
+import "../css/css.css";
+import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
-import Rating from '@mui/material/Rating';
-import TextField from '@mui/material/TextField';
-
+import Rating from "@mui/material/Rating";
+import TextField from "@mui/material/TextField";
 
 export default function RecipeContent({ recipe }) {
   // const instructions = recipe[0].RecipeInstructions.split('\n')
