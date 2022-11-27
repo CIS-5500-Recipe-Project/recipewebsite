@@ -6,7 +6,6 @@ import Recipes from "./pages/Recipes";
 
 function App() {
   return (
-    //this is a test
     <Router>
       <Routes>
         <Route path="/" element={<Home/>}/> 
@@ -15,7 +14,6 @@ function App() {
         <Route path="/Recipe/:recipeId" element={<Recipe/>}/> 
       </Routes>
     </Router>
-    // <Recipe recipeId={102} />
   );
 }
 
