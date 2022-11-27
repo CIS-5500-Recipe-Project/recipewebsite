@@ -44,7 +44,7 @@ export default function Topbar() {
             <div className="uk-navbar-right">
               <ul className="uk-navbar-nav uk-visible@m">
                 <li>
-                  <a href="sign-in.html">Sign In</a>
+                  <a>Sign In</a>
                 </li>
               </ul>
               <div className="uk-navbar-item">
