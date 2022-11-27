@@ -2,27 +2,39 @@ import "./css/main.css";
 import "./css/css.css";
 import "./css/css1.css";
 import "uikit/dist/js/uikit.js";
-import { Link } from "react-router-dom";
+import { EventHandler, useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 
 export default function Topbar() {
+  const location = useLocation();
+  const [url, setUrl] = useState(null);
+  useEffect(()=>{
+    setUrl(location.pathname);
+  },[location]);
   return (
     <div>
       <nav className="uk-navbar-container uk-letter-spacing-small">
         <div className="uk-container">
           <div className="uk-position-z-index" data-uk-navbar>
             <div className="uk-navbar-left">
-              <a className="uk-navbar-item uk-logo" href>
-                Recipe
-              </a>
+              <Link to="/">
+                <a className="uk-navbar-item uk-logo">Recipe</a>
+              </Link>
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
-                <li>
-                  <a href="/Home">Home</a>
+                <li className={(url === "/"? "uk-active": "")}>
+                  <Link to="/">
+                    Home
+                  </Link>
                 </li>
-                <li>
-                  <a href="/Recipe">Recipes</a>
+                <li className={(url === "/Recipes"? "uk-active": "")}>
+                  <Link to="/Recipes">
+                    Recipes
+                  </Link>
                 </li>
-                <li className="uk-active">
-                  <a href="/Search">Search</a>
+                <li className={(url === "/Search"? "uk-active": "")}>
+                  <Link to="/Search">
+                    <span >Search</span>
+                  </Link>
                 </li>
                 <li>
                   <a href="contact.html">Contact</a>
@@ -32,7 +44,7 @@ export default function Topbar() {
             <div className="uk-navbar-right">
               <ul className="uk-navbar-nav uk-visible@m">
                 <li>
-                  <a href="sign-in.html">Sign In</a>
+                  <a>Sign In</a>
                 </li>
               </ul>
               <div className="uk-navbar-item">
