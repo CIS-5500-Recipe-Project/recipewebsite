@@ -8,9 +8,9 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-do
 export default function Topbar() {
   const location = useLocation();
   const [url, setUrl] = useState(null);
-  useEffect(()=>{
+  useEffect(() => {
     setUrl(location.pathname);
-  },[location]);
+  }, [location]);
   return (
     <div>
       <nav className="uk-navbar-container uk-letter-spacing-small">
@@ -21,24 +21,24 @@ export default function Topbar() {
                 <a className="uk-navbar-item uk-logo">Recipe</a>
               </Link>
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
-                <li className={(url === "/"? "uk-active": "")}>
+                <li className={(url === "/" ? "uk-active" : "")}>
                   <Link to="/">
                     Home
                   </Link>
                 </li>
-                <li className={(url === "/Recipes"? "uk-active": "")}>
+                <li className={(url === "/Recipes" ? "uk-active" : "")}>
                   <Link to="/Recipes">
                     Recipes
                   </Link>
                 </li>
-                <li className={(url === "/Search"? "uk-active": "")}>
+                <li className={(url === "/Search" ? "uk-active" : "")}>
                   <Link to="/Search">
                     <span >Search</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <a href="contact.html">Contact</a>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className="uk-navbar-right">
@@ -68,6 +68,11 @@ export default function Topbar() {
           </div>
         </div>
       </nav>
+      {/* <Routes>
+        <Route path='*' element={<Home />} />
+        <Route path='/Recipe/:recipeId' element={<Recipe recipeId={102} />} />
+        <Route path='/Search/*' element={<Search />} />
+      </Routes> */}
     </div>
   );
 }
