@@ -4,13 +4,20 @@ import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import Rating from '@mui/material/Rating';
 import Card from '@mui/material/Card';
+import React from 'react';
+import SwiperCore, { EffectCoverflow, Pagination } from "swiper";
 import { CardContent, CardActionArea, Typography, CardMedia, Modal, Divider, List, ListItem, ListItemText, Tooltip } from "@mui/material";
-import React, { useState, useEffect } from 'react';
+import { Carousel, CarouselSlide } from 'material-ui-carousel'
+import { useState } from 'react';
 
 export default function RecipeMain({ recipe }) {
   const imgs = recipe[0].Images.split("\n");
+  console.log("images" + imgs);
+  console.log("typeof: " + typeof imgs);
+  // imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
-  console.log(imgs[indexImg]);
+  SwiperCore.use([EffectCoverflow, Pagination]);
+
   // console.log(recipe[0])
   // console.log(recipe[0].Images.split("\n")[1]);
   // console.log(recipe[0].PrepTime.replace(/^[0-9]+$/))
@@ -36,16 +43,23 @@ export default function RecipeMain({ recipe }) {
         <div class="uk-width-1-2@s">
           <div>
             <Card sx={{ maxWidth: 550 }}>
-              <CardActionArea onClick={handleOpen}>
-                <Tooltip title="See nutritional facts">
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    // imgs[1].replace(/'/g, "")
-                    image={imgs[indexImg].replace(/[\[\]']+/g, '')}
-                    alt="green iguana"
-                  />
-                </Tooltip>
+              <CardActionArea>
+                <Carousel>
+                  {imgs.map((img, index) => {
+                    return (
+                      <CarouselSlide key={index} autoPlay="true" interval="1000">
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          // imgs[1].replace(/'/g, "")
+                          image={img.replace(/[\[\]']+/g, '')}
+                          alt="food pic"
+                          width="60%"
+                        />
+                      </CarouselSlide>)
+                  }
+                  )}
+                </Carousel>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     Overall Rating
@@ -107,8 +121,10 @@ export default function RecipeMain({ recipe }) {
           </div>
         </div>
         <div class="uk-width-expand@s uk-flex uk-flex-middle">
-          <div>
-            <h1>{recipe[0].Name}</h1>
+          <div onClick={handleOpen}>
+            <Tooltip title="Click to see nutritional fact">
+              <h1>{recipe[0].Name}</h1>
+            </Tooltip>
             {/* <p>
               {recipe[0].Description}
             </p> */}
