@@ -4,10 +4,10 @@ import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 
-export default function ItemGrid({ name, image, rating, comment, author, onClick}) {
+export default function ItemGrid({ name, image, rating, comment, author}) {
   //   console.log(image.split("'")[1]);
   return (
-    <div onClick={onClick}>
+    <div>
       <div class="uk-card">
         <div class="uk-card-media-top uk-inline uk-light">
           <img

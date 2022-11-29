@@ -16,8 +16,8 @@ connection.connect();
 //            Example Route
 // ********************************************
 
-// Route 1 Individual Recipe
-// TODO: fill in query to grab info regarding specific recipe
+// Route 1 All Recipes - Query to grab info of all recipes
+// query:
 async function recipes(req, res) {
     var inputDescription = req.query.attribute ? req.query.attribute : "";
     var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
@@ -34,12 +34,6 @@ async function recipes(req, res) {
 
     var queryAll = `SELECT *
     FROM recipes LIMIT 50`;
-  
-  function extractColumn(arr, column) {
-    return arr.map(x => x[column])
-  }
-
-
 
     // http://localhost:8080/recipes/description?decription=summer
     // http://localhost:8080/recipes/description?decription=vegan
@@ -165,9 +159,9 @@ async function searchCount(req, res) {
 
 async function recommendation(req, res) {
 
-  var x = parseInt(req.params.recipeId);
+    var x = parseInt(req.params.recipeId);
 
-  var complexQuery = `WITH review_authors AS (
+    var complexQuery = `WITH review_authors AS (
     select AuthorId
     FROM reviews 
     where RecipeId = ${x}
@@ -188,17 +182,17 @@ async function recommendation(req, res) {
     order by ReviewCount desc 
     limit 5;`
 
-  if (x) {
-      // http://localhost:8080/recommendation/54
-      connection.query(complexQuery, function (err, results, fields) {
+    if (x) {
+        // http://localhost:8080/recommendation/54
+        connection.query(complexQuery, function (err, results, fields) {
 
-          if (err) console.log(err);
-          else {
-              console.log(results);
-              res.json(results);
-          }
-      })
-  }
+            if (err) console.log(err);
+            else {
+                console.log(results);
+                res.json(results);
+            }
+        })
+    }
 }
 
 module.exports = { recipe, recipes, pageTwo, search, searchCount, recommendation };
