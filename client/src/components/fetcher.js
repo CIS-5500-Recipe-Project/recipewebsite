@@ -21,6 +21,13 @@ const getDefaultRecipes = async () => {
     return res.json()
 }
 
-export { getDefaultRecipes, getRecipeById };
+const getSimilarRecipes = async (recipeId) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recommendation/${recipeId}`, {
+        method: 'GET',
+    })
+    return res.json();
+}
 
-// http://127.0.0.1:8080/recipes
+export { getDefaultRecipes, getRecipeById, getSimilarRecipes };
+
+// http://127.0.0.1:8080/recommendation/410347

@@ -14,13 +14,9 @@ export default function RecipeMain({ recipe }) {
   const imgs = recipe[0].Images.split("\n");
   console.log("images" + imgs);
   console.log("typeof: " + typeof imgs);
-  // imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
   SwiperCore.use([EffectCoverflow, Pagination]);
 
-  // console.log(recipe[0])
-  // console.log(recipe[0].Images.split("\n")[1]);
-  // console.log(recipe[0].PrepTime.replace(/^[0-9]+$/))
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleOpen = () => setShow(true);
@@ -62,11 +58,7 @@ export default function RecipeMain({ recipe }) {
                 </Carousel>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Overall Rating
                     <Rating name="Overall Rating" value={recipe[0].AggregatedRating} precision={0.1} readOnly />
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {recipe[0].Description}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -125,9 +117,9 @@ export default function RecipeMain({ recipe }) {
             <Tooltip title="Click to see nutritional fact">
               <h1>{recipe[0].Name}</h1>
             </Tooltip>
-            {/* <p>
+            <Typography variant="body2" color="text.secondary">
               {recipe[0].Description}
-            </p> */}
+            </Typography>
             <div
               class="uk-margin-medium-top uk-child-width-expand uk-text-center uk-grid-divider"
               data-uk-grid=""
