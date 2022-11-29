@@ -1,3 +1,9 @@
+import "../css/main.css";
+import "../css/css.css";
+import "../css/css1.css";
+import "uikit/dist/js/uikit.js";
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+
 export default function ItemGrid({ name, image, rating, comment, author, onClick}) {
   //   console.log(image.split("'")[1]);
   return (
@@ -10,13 +16,6 @@ export default function ItemGrid({ name, image, rating, comment, author, onClick
             alt="Course Title"
           />
           <div class="uk-position-cover uk-card-overlay uk-border-rounded-medium"></div>
-          <div class="uk-position-xsmall uk-position-top-right">
-            <a
-              href="#"
-              class="uk-icon-button uk-like uk-position-z-index uk-position-relative"
-              data-uk-icon="heart"
-            ></a>
-          </div>
         </div>
         <div>
           <h3 class="uk-card-title uk-text-500 uk-margin-small-bottom uk-margin-top">
@@ -24,10 +23,7 @@ export default function ItemGrid({ name, image, rating, comment, author, onClick
           </h3>
           <div class="uk-text-xsmall uk-text-muted" data-uk-grid="">
             <div class="uk-width-auto uk-flex uk-flex-middle">
-              <span
-                class="uk-rating-filled"
-                data-uk-icon="icon: star; ratio: 0.7"
-              ></span>
+              <StarRoundedIcon fontSize="small" color="warning"/>
               <span class="uk-margin-xsmall-left">{rating}</span>
               <span>({comment})</span>
             </div>

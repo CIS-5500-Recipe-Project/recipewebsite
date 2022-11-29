@@ -19,4 +19,11 @@ const getFoodSearchCount = async (keyword) => {
   return res.json();
 };
 
-export { getFoodSearch, getFoodSearchCount };
+const getRecipeById = async (recipeId) => {
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/recipe/${recipeId}`, {
+      method: 'GET',
+  })
+  return res.json()
+}
+
+export { getFoodSearch, getFoodSearchCount, getRecipeById};
