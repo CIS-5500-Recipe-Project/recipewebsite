@@ -2,7 +2,11 @@ import "./css/main.css";
 import "./css/css.css";
 import "./css/css1.css";
 import "uikit/dist/js/uikit.js";
-import { Link } from "react-router-dom";
+import Recipe from "../pages/Recipe";
+import Recipes from "../pages/Recipes";
+import Search from "../pages/Search";
+import Home from "../pages/Home";
+import { Link, Route, Routes } from "react-router-dom";
 
 export default function Topbar() {
   return (
@@ -14,19 +18,20 @@ export default function Topbar() {
               <a className="uk-navbar-item uk-logo" href>
                 Recipe
               </a>
+
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
                 <li>
-                  <a href="/Home">Home</a>
+                  <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <a href="/Recipe">Recipes</a>
+                  <Link to="/Recipe">Recipes</Link>
                 </li>
                 <li className="uk-active">
-                  <a href="/Search">Search</a>
+                  <Link to="/Search">Search</Link>
                 </li>
-                <li>
+                {/* <li>
                   <a href="contact.html">Contact</a>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className="uk-navbar-right">
@@ -56,6 +61,11 @@ export default function Topbar() {
           </div>
         </div>
       </nav>
+      {/* <Routes>
+        <Route path='*' element={<Home />} />
+        <Route path='/Recipe/:recipeId' element={<Recipe recipeId={102} />} />
+        <Route path='/Search/*' element={<Search />} />
+      </Routes> */}
     </div>
   );
 }
