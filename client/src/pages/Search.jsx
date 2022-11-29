@@ -1,17 +1,13 @@
 import Topbar from "../components/Topbar";
 import Bottombar from "../components/Bottombar";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-
 import Pagination from "@mui/material/Pagination";
-
 import { getFoodSearch, getFoodSearchCount } from "../fetcher";
-
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-
 import ItemGrid from "../components/Search/ItemGrid";
-
 import dummy from "../components/dummy.json";
 
 export default function Search() {
@@ -102,7 +98,8 @@ export default function Search() {
           >
             {result.map((ele, index) => {
               return (
-                <ItemGrid
+                <Link to={`/recipe/${ele.RecipeId}`}>
+                  <ItemGrid
                   key={index}
                   onClick={()=>handleClick(index)}
                   name={ele.Name}
@@ -111,6 +108,7 @@ export default function Search() {
                   comment={ele.Comment}
                   author="Test"
                 />
+              </Link>
               );
             })}
           </div>
