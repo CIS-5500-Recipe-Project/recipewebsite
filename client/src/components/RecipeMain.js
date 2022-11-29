@@ -4,16 +4,18 @@ import "../static/css/css1.css";
 import "uikit/dist/js/uikit.js";
 import Rating from '@mui/material/Rating';
 import Card from '@mui/material/Card';
-import { CardContent, CardActionArea, Typography, CardMedia, Modal, Divider, List, ListItem, ListItemText, Tooltip } from "@mui/material";
+import { CardContent, CardActionArea, Typography, CardMedia, Modal, Divider, List, ListItem, ListItemText, Tooltip, Swiper, SwiperSlide } from "@mui/material";
 import React, { useState, useEffect } from 'react';
 
 export default function RecipeMain({ recipe }) {
   const imgs = recipe[0].Images.split("\n");
+  console.log("images" + imgs);
+  imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
+  console.log("new images" + imgs);
+  console.log("typeof: " + typeof imgs);
+  // imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
-  console.log(imgs[indexImg]);
-  // console.log(recipe[0])
-  // console.log(recipe[0].Images.split("\n")[1]);
-  // console.log(recipe[0].PrepTime.replace(/^[0-9]+$/))
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleOpen = () => setShow(true);
@@ -38,13 +40,27 @@ export default function RecipeMain({ recipe }) {
             <Card sx={{ maxWidth: 550 }}>
               <CardActionArea onClick={handleOpen}>
                 <Tooltip title="See nutritional facts">
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    // imgs[1].replace(/'/g, "")
-                    image={imgs[indexImg].replace(/[\[\]']+/g, '')}
-                    alt="green iguana"
-                  />
+                  <Swiper
+                    grabCursor
+                    keyboard={{ enabled: true }}
+                    pagination={{ clickable: true }}
+                    navigation
+                    loop
+                    className={swiperContainer}
+                  >
+                    {imgs.maps((img, index) => {
+                      <SwiperSlide key={index}>
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          // imgs[1].replace(/'/g, "")
+                          image={img}
+                          alt="food pic"
+                        />
+                      </SwiperSlide>
+                    }
+                    )}
+                  </Swiper>
                 </Tooltip>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">

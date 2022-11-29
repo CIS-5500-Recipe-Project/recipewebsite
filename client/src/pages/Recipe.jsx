@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { getRecipeById } from "../fetcher.js";
 import Loading from "../components/Progress";
 
+
 export default function Recipe() {
   const [recipe, setRecipe] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -25,6 +26,7 @@ export default function Recipe() {
       {loaded ? <RecipeMain recipe={recipe} /> : <Loading />}
       {loaded ? <RecipeContent recipe={recipe} /> : null}
       {loaded ? <SimilarRecipe recipe={recipe} /> : null}
+
     </div>
   );
 }

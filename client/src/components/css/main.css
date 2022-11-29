@@ -8942,6 +8942,11 @@ iframe.uk-cover {
 .uk-offcanvas-bar .uk-logo-inverse {
   display: inline;
 } /* ========================================================================   Component: Print ========================================================================== */
+.carousel {
+  width:900px;
+  height:500px;
+  margin: auto;
+}
 @media print {
   *,
   *::before,
