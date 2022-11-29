@@ -17,7 +17,7 @@ export default function Recipe({ recipeId }) {
   }, [recipeId]);
   return (
     <div>
-      {/* <Topbar /> */}
+      <Topbar />
       <RecipeMain recipe={recipe}/>
       <RecipeContent recipe={recipe} />
       <SimilarRecipe recipe={recipe} />
