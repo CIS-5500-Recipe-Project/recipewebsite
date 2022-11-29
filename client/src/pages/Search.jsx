@@ -101,7 +101,7 @@ export default function Search() {
                 <Link to={`/recipe/${ele.RecipeId}`}>
                   <ItemGrid
                   key={index}
-                  onClick={()=>handleClick(index)}
+                  // onClick={()=>handleClick(index)}
                   name={ele.Name}
                   image={ele.Images}
                   rating={ele.AvgRating}

@@ -13,7 +13,6 @@ export default function RecipeMain({ recipe }) {
   imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
   console.log("new images" + imgs);
   console.log("typeof: " + typeof imgs);
-  // imgs.forEach((img) => { img = img.replace(/[\[\]']+/g, ''); });
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
 
   const [show, setShow] = useState(false);
@@ -52,7 +51,7 @@ export default function RecipeMain({ recipe }) {
                       <SwiperSlide key={index}>
                         <CardMedia
                           component="img"
-                          height="200"
+                          // height="200"
                           // imgs[1].replace(/'/g, "")
                           image={img}
                           alt="food pic"
@@ -64,11 +63,7 @@ export default function RecipeMain({ recipe }) {
                 </Tooltip>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Overall Rating
                     <Rating name="Overall Rating" value={recipe[0].AggregatedRating} precision={0.1} readOnly />
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {recipe[0].Description}
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -125,9 +120,9 @@ export default function RecipeMain({ recipe }) {
         <div class="uk-width-expand@s uk-flex uk-flex-middle">
           <div>
             <h1>{recipe[0].Name}</h1>
-            {/* <p>
+            <p>
               {recipe[0].Description}
-            </p> */}
+            </p>
             <div
               class="uk-margin-medium-top uk-child-width-expand uk-text-center uk-grid-divider"
               data-uk-grid=""
