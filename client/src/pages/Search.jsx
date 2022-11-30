@@ -133,6 +133,7 @@ export default function Search() {
                   image={ele.Images}
                   rating={ele.AvgRating}
                   comment={ele.Comment}
+                  date={ele.Date}
                   author="Test"
                 />
               </Link>

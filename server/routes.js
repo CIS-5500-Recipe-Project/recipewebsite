@@ -121,12 +121,13 @@ async function search(req, res) {
     } else if(sort == 3) {
         defaultSort = "Comment DESC"
     }
-    console.log(defaultSort)
+    // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
     const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
-    COUNT(reviews.RecipeId) as Comment
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
     from recipes
     JOIN reviews on recipes.RecipeId = reviews.RecipeId
     AND DATE(recipes.DatePublished) > '2010-01-01'
