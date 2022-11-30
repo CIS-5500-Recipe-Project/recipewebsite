@@ -110,18 +110,32 @@ async function recipe(req, res) {
 async function search(req, res) {
     const pagesize = req.query.pagesize ? req.query.pagesize : 10;
     const page = req.query.page ? req.query.page : 1;
+    const sort = req.query.sort ? req.query.sort : 1;
+    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
+    // 1=date
+    // 2=rating
+    // 3=comment
     //   console.log(req.query);
+    var defaultSort = "recipes.DatePublished DESC"
+    if(sort == 2) {
+        defaultSort = "AvgRating DESC"
+    } else if(sort == 3) {
+        defaultSort = "Comment DESC"
+    }
+    // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
     const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
-    COUNT(reviews.RecipeId) as Comment
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
     from recipes
     JOIN reviews on recipes.RecipeId = reviews.RecipeId
     AND DATE(recipes.DatePublished) > '2010-01-01'
     WHERE recipes.Name LIKE '%${keyword}%'
+    ${tagQuery}
     GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
-    ORDER BY AvgRating, Comment DESC, recipes.DatePublished DESC
+    ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
     // http://localhost:8080/search/egg
@@ -138,10 +152,12 @@ async function search(req, res) {
 async function searchCount(req, res) {
     //   console.log(req.query);
     const keyword = req.params.keyword ? req.params.keyword : "";
+    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
 
     var query = `SELECT COUNT(recipes.RecipeId) AS Total
     from recipes
     WHERE recipes.Name LIKE '%${keyword}%'
+    ${tagQuery}
     AND DATE(recipes.DatePublished) > '2010-01-01'`;
 
     // http://localhost:8080/searchcount/egg
