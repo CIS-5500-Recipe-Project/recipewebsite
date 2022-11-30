@@ -61,6 +61,10 @@ export default function Search() {
                 <TextField
                   id="search-bar"
                   className="text"
+                  onKeyPress={event => {
+                    if(event.key === 'Enter') 
+                    {event.preventDefault(); 
+                     handleSearch()}}}
                   onInput={(event, value) => {
                     setFood(event.target.value);
                     // console.log(event.target.value);
