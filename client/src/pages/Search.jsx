@@ -118,7 +118,7 @@ export default function Search() {
           </div>
           <div class="uk-margin-large-top uk-text-small">
             <Pagination
-              count={resultCount / 12}
+              count={Math.ceil(resultCount / 12)}
               onChange={handlePagination}
               color="primary"
             />
