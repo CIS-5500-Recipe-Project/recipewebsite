@@ -4,7 +4,7 @@ import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 
-export default function ItemGrid({ name, image, rating, comment, author}) {
+export default function ItemGrid({ name, image, rating, comment, author, date}) {
   //   console.log(image.split("'")[1]);
   return (
     <div>
@@ -27,7 +27,7 @@ export default function ItemGrid({ name, image, rating, comment, author}) {
               <span class="uk-margin-xsmall-left">{rating}</span>
               <span>({comment})</span>
             </div>
-            <div class="uk-width-expand uk-text-right">by {author}</div>
+            <div class="uk-width-expand uk-text-right">by {author} ({date.split(" ")[0]})</div>
           </div>
         </div>
         <a href="recipe.html" class="uk-position-cover"></a>
