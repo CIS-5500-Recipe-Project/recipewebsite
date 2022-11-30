@@ -141,7 +141,8 @@ async function searchCount(req, res) {
 
     var query = `SELECT COUNT(recipes.RecipeId) AS Total
     from recipes
-    WHERE recipes.Name LIKE '%${keyword}%'`;
+    WHERE recipes.Name LIKE '%${keyword}%'
+    AND DATE(recipes.DatePublished) > '2010-01-01'`;
 
     // http://localhost:8080/searchcount/egg
     connection.query(query, function (err, results, fields) {
