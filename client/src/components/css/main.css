@@ -8942,10 +8942,35 @@ iframe.uk-cover {
 .uk-offcanvas-bar .uk-logo-inverse {
   display: inline;
 } /* ========================================================================   Component: Print ========================================================================== */
-.carousel {
+/* .carousel {
   width:900px;
   height:500px;
   margin: auto;
+} */
+
+.slider {
+  display: flex !important;
+  align-items: center;
+  max-height: 250px;
+  position: relative;
+}
+
+.slide {
+  height: inherit !important;
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.thumbs-wrapper {
+  margin-top: 0px;
 }
 @media print {
   *,
@@ -8989,4 +9014,3 @@ iframe.uk-cover {
     page-break-after: avoid;
   }
 }
-
