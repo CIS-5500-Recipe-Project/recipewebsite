@@ -23,7 +23,9 @@ app.get("/recipes/:choice", routes.recipes);
 app.get("/pageTwo", routes.pageTwo);
 
 //Search Page
+app.get("/search/", routes.search);
 app.get("/search/:keyword", routes.search);
+app.get("/searchcount/", routes.searchCount);
 app.get("/searchcount/:keyword", routes.searchCount);
 
 //complex query
