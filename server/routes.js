@@ -111,6 +111,7 @@ async function search(req, res) {
     const pagesize = req.query.pagesize ? req.query.pagesize : 10;
     const page = req.query.page ? req.query.page : 1;
     const sort = req.query.sort ? req.query.sort : 1;
+    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
     // 1=date
     // 2=rating
     // 3=comment
@@ -132,6 +133,7 @@ async function search(req, res) {
     JOIN reviews on recipes.RecipeId = reviews.RecipeId
     AND DATE(recipes.DatePublished) > '2010-01-01'
     WHERE recipes.Name LIKE '%${keyword}%'
+    ${tagQuery}
     GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
@@ -150,10 +152,12 @@ async function search(req, res) {
 async function searchCount(req, res) {
     //   console.log(req.query);
     const keyword = req.params.keyword ? req.params.keyword : "";
+    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
 
     var query = `SELECT COUNT(recipes.RecipeId) AS Total
     from recipes
     WHERE recipes.Name LIKE '%${keyword}%'
+    ${tagQuery}
     AND DATE(recipes.DatePublished) > '2010-01-01'`;
 
     // http://localhost:8080/searchcount/egg
