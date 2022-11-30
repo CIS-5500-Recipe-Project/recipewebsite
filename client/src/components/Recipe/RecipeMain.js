@@ -5,9 +5,9 @@ import "uikit/dist/js/uikit.js";
 import Rating from '@mui/material/Rating';
 import Card from '@mui/material/Card';
 import React from 'react';
-import SwiperCore, { EffectCoverflow, Pagination } from "swiper";
 import { CardContent, CardActionArea, Typography, CardMedia, Modal, Divider, List, ListItem, ListItemText, Tooltip } from "@mui/material";
-import { Carousel, CarouselSlide } from 'material-ui-carousel'
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
 
 export default function RecipeMain({ recipe }) {
@@ -15,7 +15,6 @@ export default function RecipeMain({ recipe }) {
   console.log("images" + imgs);
   console.log("typeof: " + typeof imgs);
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
-  SwiperCore.use([EffectCoverflow, Pagination]);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -38,24 +37,31 @@ export default function RecipeMain({ recipe }) {
       <div data-uk-grid="">
         <div class="uk-width-1-2@s">
           <div>
-            <Card sx={{ maxWidth: 550 }}>
+            <Card sx={{ maxHeight: 650, maxWidth: 550 }}>
               <CardActionArea>
-                <Carousel>
+                <CardContent>
+                <Carousel autoPlay showIndicators={false}>
                   {imgs.map((img, index) => {
                     return (
-                      <CarouselSlide key={index} autoPlay="true" interval="1000">
-                        <CardMedia
-                          component="img"
-                          height="200"
-                          // imgs[1].replace(/'/g, "")
-                          image={img.replace(/[\[\]']+/g, '')}
-                          alt="food pic"
-                          width="60%"
-                        />
-                      </CarouselSlide>)
+                      <div>
+                    <img src={img.replace(/[\[\]']+/g, '')} />
+                    {/* <p className="legend">Legend {index}</p> */}
+                      </div>
+                      // <CarouselSlide key={index} autoPlay="true" interval="1000">
+                      //   <CardMedia
+                      //     component="img"
+                      //     height="200"
+                      //     // imgs[1].replace(/'/g, "")
+                      //     image={img.replace(/[\[\]']+/g, '')}
+                      //     alt="food pic"
+                      //     width="60%"
+                      //   />
+                      // </CarouselSlide>
+                      )
                   }
                   )}
                 </Carousel>
+                </CardContent>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     <Rating name="Overall Rating" value={recipe[0].AggregatedRating} precision={0.1} readOnly />
