@@ -110,7 +110,18 @@ async function recipe(req, res) {
 async function search(req, res) {
     const pagesize = req.query.pagesize ? req.query.pagesize : 10;
     const page = req.query.page ? req.query.page : 1;
+    const sort = req.query.sort ? req.query.sort : 1;
+    // 1=date
+    // 2=rating
+    // 3=comment
     //   console.log(req.query);
+    var defaultSort = "recipes.DatePublished DESC"
+    if(sort == 2) {
+        defaultSort = "AvgRating DESC"
+    } else if(sort == 3) {
+        defaultSort = "Comment DESC"
+    }
+    console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
     const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
     recipes.Images,
@@ -121,7 +132,7 @@ async function search(req, res) {
     AND DATE(recipes.DatePublished) > '2010-01-01'
     WHERE recipes.Name LIKE '%${keyword}%'
     GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
-    ORDER BY AvgRating, Comment DESC, recipes.DatePublished DESC
+    ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
     // http://localhost:8080/search/egg

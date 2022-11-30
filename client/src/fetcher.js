@@ -1,8 +1,8 @@
 import { config } from './config';
 
-const getFoodSearch = async (keyword, page, pagesize) => {
+const getFoodSearch = async (keyword, page, pagesize, sort) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/search/${keyword}?page=${page}&pagesize=${pagesize}`,
+    `http://${config.server_host}:${config.server_port}/search/${keyword}?page=${page}&pagesize=${pagesize}&sort=${sort}`,
     {
       method: "GET",
     }
