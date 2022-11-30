@@ -11,7 +11,13 @@ import ItemGrid from "../components/Search/ItemGrid";
 import dummy from "../components/dummy.json";
 import Loading from "../components/Progress";
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+
 export default function Search() {
+  const [foodSort, setFoodSort] = useState([1]);
   const [food, setFood] = useState([""]);
 
   const [resultCount, setResultCount] = useState([12]);
@@ -23,7 +29,7 @@ export default function Search() {
       setResultCount(res[0].Total);
     });
 
-    getFoodSearch(food, 1, 12).then((res) => {
+    getFoodSearch(food, 1, 12, foodSort).then((res) => {
       setResult(res);
     });
   }, []);
@@ -34,15 +40,21 @@ export default function Search() {
       // console.log(res);
       setResultCount(res[0].Total);
     });
-    getFoodSearch(food, 1, 12).then((res) => {
+    getFoodSearch(food, 1, 12, foodSort).then((res) => {
       // console.log(res);
       setResult(res);
     });
   };
 
   const handlePagination = (event, value) => {
-    getFoodSearch(food, value, 12).then((res) => {
+    getFoodSearch(food, value, 12, foodSort).then((res) => {
       // console.log(res);
+      setResult(res);
+    });
+  };
+    const handleSort = (event, target) => {
+      setFoodSort(target.props.value);
+    getFoodSearch(food, 1, 12, target.props.value).then((res) => {
       setResult(res);
     });
   };
@@ -85,11 +97,21 @@ export default function Search() {
               </form>
             </div>
             <div class="uk-width-1-2@m uk-text-right@m">
-              <select class="uk-select uk-select-light uk-width-auto uk-border-pill uk-select-muted">
-                <option>Sort by: Latest</option>
-                <option>Sort by: Top Rated</option>
-                <option>Sort by: Trending</option>
-              </select>
+              
+            <Box sx={{ minWidth: 120 }} >
+              <InputLabel id="demo-simple-select-label">Sort by:</InputLabel>
+              <Select 
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={foodSort}
+                // label="Sort by:"
+                onChange={handleSort}
+              >
+                <MenuItem value={1}>Latest</MenuItem>
+                <MenuItem value={2}>Top Rated</MenuItem>
+                <MenuItem value={3}>Trending</MenuItem>
+              </Select>
+          </Box>
             </div>
           </div>
           <div>
