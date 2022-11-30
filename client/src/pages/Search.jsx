@@ -25,36 +25,36 @@ export default function Search() {
   // const [result, setResult] = useState(Array(12).fill(dummy.search));
 
   useEffect(() => {
-    getFoodSearchCount(food).then((res) => {
+    getFoodSearchCount(food, '').then((res) => {
       setResultCount(res[0].Total);
     });
 
-    getFoodSearch(food, 1, 12, foodSort).then((res) => {
+    getFoodSearch(food, 1, 12, foodSort, '').then((res) => {
       setResult(res);
     });
   }, []);
 
   const handleSearch = (event, value) => {
     console.log("Running Search");
-    getFoodSearchCount(food).then((res) => {
+    getFoodSearchCount(food, '').then((res) => {
       // console.log(res);
       setResultCount(res[0].Total);
     });
-    getFoodSearch(food, 1, 12, foodSort).then((res) => {
+    getFoodSearch(food, 1, 12, foodSort, '').then((res) => {
       // console.log(res);
       setResult(res);
     });
   };
 
   const handlePagination = (event, value) => {
-    getFoodSearch(food, value, 12, foodSort).then((res) => {
+    getFoodSearch(food, value, 12, foodSort, '').then((res) => {
       // console.log(res);
       setResult(res);
     });
   };
     const handleSort = (event, target) => {
       setFoodSort(target.props.value);
-    getFoodSearch(food, 1, 12, target.props.value).then((res) => {
+    getFoodSearch(food, 1, 12, target.props.value, '').then((res) => {
       setResult(res);
     });
   };
