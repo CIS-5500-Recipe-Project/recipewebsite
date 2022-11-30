@@ -9,23 +9,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import ItemGrid from "../components/Search/ItemGrid";
 import dummy from "../components/dummy.json";
+import Loading from "../components/Progress";
 
 export default function Search() {
-  const [food, setFood] = useState(["egg"]);
+  const [food, setFood] = useState([""]);
 
   const [resultCount, setResultCount] = useState([12]);
-  const [result, setResult] = useState(Array(12).fill(dummy.search));
+  const [result, setResult] = useState([]);
+  // const [result, setResult] = useState(Array(12).fill(dummy.search));
 
-  // useEffect(() => {
-  //   getFoodSearchCount(food).then((res) => {
-  //     setResultCount(res[0].Total);
-  //   });
+  useEffect(() => {
+    getFoodSearchCount(food).then((res) => {
+      setResultCount(res[0].Total);
+    });
 
-  //   getFoodSearch(food, 1, 12).then((res) => {
-  //     // console.log(res);
-  //     setResult(res);
-  //   });
-  // }, []);
+    getFoodSearch(food, 1, 12).then((res) => {
+      setResult(res);
+    });
+  }, []);
 
   const handleSearch = (event, value) => {
     console.log("Running Search");
@@ -100,7 +101,7 @@ export default function Search() {
             class="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-margin-medium-top"
             data-uk-grid=""
           >
-            {result.map((ele, index) => {
+            {result.length > 0 ? result.map((ele, index) => {
               return (
                 <Link to={`/recipe/${ele.RecipeId}`}>
                   <ItemGrid
@@ -114,7 +115,9 @@ export default function Search() {
                 />
               </Link>
               );
-            })}
+            })
+          : <Loading />
+          }
           </div>
           <div class="uk-margin-large-top uk-text-small">
             <Pagination
