@@ -117,9 +117,9 @@ async function search(req, res) {
     // 3=comment
     //   console.log(req.query);
     var defaultSort = "recipes.DatePublished DESC"
-    if(sort == 2) {
+    if (sort == 2) {
         defaultSort = "AvgRating DESC"
-    } else if(sort == 3) {
+    } else if (sort == 3) {
         defaultSort = "Comment DESC"
     }
     // console.log(defaultSort)
@@ -179,25 +179,29 @@ async function recommendation(req, res) {
     var x = parseInt(req.params.recipeId);
 
     var complexQuery = `WITH review_authors AS (
-    select AuthorId
-    FROM reviews 
-    where RecipeId = ${x}
+        select AuthorId
+        FROM reviews 
+        where RecipeId = ${x}
     ),
     other_recipes AS (
-    select RecipeId 
-    FROM reviews 
-    WHERE AuthorId in (select * from review_authors)
+        select RecipeId 
+        FROM reviews 
+        WHERE AuthorId in (select * from review_authors)
     ),
     recipe_category AS (
-    SELECT RecipeCategory AS category
-    FROM recipes
-    where RecipeID = ${x}
-    )
+        SELECT RecipeCategory AS category
+        FROM recipes
+        where RecipeID = ${x}
+    ),
+    recipe_ingredient AS (
+        SELECT ingredient
+        FROM recipes
+        WHERE RecipeID = ${x})
     select * 
     from recipes 
-    where RecipeId in (select * from other_recipes) AND RecipeId <> ${x} AND  RecipeCategory = (select * from recipe_category) 
+    where (RecipeId in (select * from other_recipes) AND RecipeId <> ${x}) OR( RecipeId <> ${x} AND  RecipeCategory = (select * from recipe_category)) OR (ingredient && (select * from recipe_ingredient) AND RecipeId <> ${x})
     order by ReviewCount desc 
-    limit 5;`
+    limit 4;`
 
     if (x) {
         // http://localhost:8080/recommendation/54
