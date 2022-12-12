@@ -11,7 +11,7 @@ const getFoodSearch = async (keyword, page, pagesize, sort, tag) => {
 };
 const getFoodSearchCount = async (keyword, tag) => {
   var res = await fetch(
-    `http://${config.server_host}:${config.server_port}/searchcount/${keyword}?tag=${tag}`,
+    `http://${config.server_host}:${config.server_port}/searchcount/${keyword}`,
     {
       method: "GET",
     }
@@ -26,4 +26,25 @@ const getRecipeById = async (recipeId) => {
   return res.json()
 }
 
-export { getFoodSearch, getFoodSearchCount, getRecipeById};
+const getReviewsById = async (recipeId)=>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/reviews/${recipeId}`, {
+    method: 'GET',
+})
+return res.json()
+}
+
+const homePage_RecentlyPopular = async() =>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/homePage_RecentlyPopular`,{
+    method: 'GET',
+  })
+  return res.json()
+}
+
+const homePage_TodaySelected = async() =>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/homePage_TodaySelected`,{
+    method: 'GET',
+  })
+  return res.json()
+}
+
+export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected};

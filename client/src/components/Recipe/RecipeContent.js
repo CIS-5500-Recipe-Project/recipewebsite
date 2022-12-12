@@ -4,13 +4,18 @@ import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
+import {Link } from "react-router-dom";
 
-export default function RecipeContent({ recipe }) {
+export default function RecipeContent({ recipe, reviews }) {
   const instructions = recipe[0].RecipeInstructions.split('\n')
-  const ingredients = recipe[0].ingredient.split(',')
-  const tags = recipe[0].Keywords.replace(/[^a-z0-9, ]/gi, '').split(' ')
+  var ingredients_str = recipe[0].ingredient
+  const ingredients = ingredients_str.substring(1, ingredients_str.length-1).split('\",\"')
+  var keywords_str = recipe[0].Keywords
+  const tags = keywords_str=="[None]"? []: keywords_str.substring(2,keywords_str.length-2).split('\' \'')
+  const reviewPageCount = Math.ceil(reviews.length / 5);
   console.log(typeof tags)
-  console.log(tags)
+  console.log("review");
+  console.log(reviews);
   return (
     < div class="uk-section uk-section-default" >
       <div class="uk-container uk-container-small">
@@ -40,6 +45,12 @@ export default function RecipeContent({ recipe }) {
               <h3>Comments</h3>
               <ul class="uk-comment-list uk-margin-medium-top">
                 <li>
+                  <div>
+                  { (
+              reviews.map((ele, index) => {
+                return (
+                  <ul class="uk-comment-list uk-margin-medium-top">
+                  <li>
                   <article class="uk-comment uk-visible-toggle" tabindex="-1">
                     <header class="uk-comment-header uk-position-relative">
                       <div
@@ -49,39 +60,40 @@ export default function RecipeContent({ recipe }) {
                         <div class="uk-width-auto">
                           <img
                             class="uk-comment-avatar uk-border-circle"
-                            src="https://pub-static.fotor.com/assets/projects/pages/d5bdd0513a0740a8a38752dbc32586d0/fotor-03d1a91a0cec4542927f53c87e0599f6.jpg"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQKpiFXNibuHIcJpUpot_YgS55ywsPHhSiEA&usqp=CAU"
                             width="50"
                             height="50"
-                            alt="Alice Thomson"
                           />
                         </div>
                         <div class="uk-width-expand">
                           <h4 class="uk-comment-title uk-margin-remove">
                             <a class="uk-link-reset" href="#">
-                              Alice Thomson
+                              {ele.AuthorName}
                             </a>
                           </h4>
                           <p class="uk-comment-meta uk-margin-remove">
                             <a class="uk-link-reset" href="#">
-                              12 days ago
+                              {Date(ele.DateSubmitted)}
                             </a>
                           </p>
-                          <Rating name="half-rating-read" value={3.5} precision={0.1} readOnly />
+                          <Rating name="Overall Rating" value={ele.Rating} precision={0.1} readOnly />
                         </div>
                       </div>
                     </header>
                     <div class="uk-comment-body">
                       <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua. At vero
-                        eos et accusam et justo duo dolores et ea rebum. Stet
-                        clita kasd gubergren, no sea takimata sanctus est Lorem
-                        ipsum dolor sit amet.
+                        {ele.Review}
                       </p>
                     </div>
                   </article>
-
+                  </li>
+                  </ul>
+                );
+              })
+            ) }
+            
+            </div>
+                  
                 </li>
               </ul>
               <hr class="uk-margin-medium-top" />
@@ -102,7 +114,9 @@ export default function RecipeContent({ recipe }) {
             <h3 class="uk-margin-large-top">Tags</h3>
             <div class="uk-margin-medium-top" data-uk-margin="">
               {tags.map((tag) => (<a class="uk-display-inline-block" href="#">
-                <span class="uk-label uk-label-light">{tag.replace(/'(.*?)'/g)}</span>
+                <Link to={`/Search/${tag}`}>
+                    <span class="uk-label uk-label-light">{tag.replace(/'(.*?)'/g)}</span>
+                </Link>
               </a>))}
             </div>
           </div>

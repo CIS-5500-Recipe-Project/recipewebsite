@@ -157,9 +157,8 @@ export default function RecipeMain({ recipe }) {
               <div class="uk-width-auto@s uk-text-small">
                 <span class="uk-label">{recipe[0].RecipeCategory}</span>
                 <p class="uk-margin-small-top uk-margin-remove-bottom">
-                  Created by <a href="#">Alex whatever</a>
+                  Created by <span>{recipe[0].AuthorName}</span>
                 </p>
-                <span class="uk-text-muted">21 recipes</span>
               </div>
             </div>
           </div>
