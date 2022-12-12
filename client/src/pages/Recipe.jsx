@@ -12,7 +12,7 @@ import dummy from "../components/dummy.json";
 
 export default function Recipe() {
   const [recipe, setRecipe] = useState(0);
-  const [recipes , setRecipes] = useState([dummy.recipe]);
+  const [recipes , setRecipes] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const { recipeId } = useParams();
 

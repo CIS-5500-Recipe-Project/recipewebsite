@@ -4,11 +4,14 @@ import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
+import {Link } from "react-router-dom";
 
 export default function RecipeContent({ recipe }) {
   const instructions = recipe[0].RecipeInstructions.split('\n')
-  const ingredients = recipe[0].ingredient.split(',')
-  const tags = recipe[0].Keywords.replace(/[^a-z0-9, ]/gi, '').split(' ')
+  var ingredients_str = recipe[0].ingredient
+  const ingredients = ingredients_str.substring(1, ingredients_str.length-1).split('\",\"')
+  var keywords_str = recipe[0].Keywords
+  const tags = keywords_str=="[None]"? []: keywords_str.substring(2,keywords_str.length-2).split('\' \'')
   console.log(typeof tags)
   console.log(tags)
   return (
@@ -102,7 +105,9 @@ export default function RecipeContent({ recipe }) {
             <h3 class="uk-margin-large-top">Tags</h3>
             <div class="uk-margin-medium-top" data-uk-margin="">
               {tags.map((tag) => (<a class="uk-display-inline-block" href="#">
-                <span class="uk-label uk-label-light">{tag.replace(/'(.*?)'/g)}</span>
+                <Link to={`/Search/${tag}`}>
+                    <span class="uk-label uk-label-light">{tag.replace(/'(.*?)'/g)}</span>
+                </Link>
               </a>))}
             </div>
           </div>
