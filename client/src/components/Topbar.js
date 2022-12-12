@@ -11,6 +11,7 @@ export default function Topbar() {
   useEffect(() => {
     setUrl(location.pathname);
   }, [location]);
+  var str_url = String(url);
   return (
     <div>
       <nav className="uk-navbar-container uk-letter-spacing-small">
@@ -31,7 +32,7 @@ export default function Topbar() {
                     Recipes
                   </Link>
                 </li>
-                <li className={(url === "/Search" ? "uk-active" : "")}>
+                <li className={(str_url.startsWith("/Search") ? "uk-active" : "")}>
                   <Link to="/Search">
                     <span >Search</span>
                   </Link>

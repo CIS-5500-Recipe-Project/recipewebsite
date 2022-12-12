@@ -3,6 +3,7 @@ import "../css/css.css";
 import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import { Link } from "react-router-dom";
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Typography } from "@mui/material";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -19,7 +20,7 @@ export default function SmilarRecipe({ recipes }) {
         <div class="uk-grid-large" data-uk-grid="">
           <div class="uk-width-expand@m">
             <div class="uk-article">
-              <h3>Similar Recipes</h3>
+              <h3>Others You May Like</h3>
               <div
                 class="uk-child-width-1-2 uk-child-width-1-4@s"
                 data-uk-grid=""
@@ -50,15 +51,12 @@ export default function SmilarRecipe({ recipes }) {
                             </h3>
                             <div class="uk-text-xsmall uk-text-muted" data-uk-grid="">
                               <div class="uk-width-auto uk-flex uk-flex-middle">
-                                <span
-                                  class="uk-rating-filled"
-                                  data-uk-icon="icon: star; ratio: 0.7"
-                                ></span>
+                                <StarRoundedIcon fontSize="small" color="warning" />
                                 <span class="uk-margin-xsmall-left">5.0</span>
                                 <span>({recipe.ReviewCount})</span>
                               </div>
                               <div class="uk-width-expand uk-text-right">
-                                by placeHolder
+                                by {recipe.AuthorName}
                               </div>
                             </div>
                           </div>
