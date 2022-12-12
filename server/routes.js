@@ -107,6 +107,26 @@ async function recipe(req, res) {
   }
 }
 
+async function reviews(req,res) {
+
+  var x = parseInt(req.params.recipeId);
+  console.log(typeof x);
+  var query = `SELECT *
+    FROM reviews
+    WHERE RecipeId = ${x}`;
+
+  if (x) {
+    connection.query(query, function (err, results, fields) {
+      console.log(typeof req.params.recipeId);
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  }
+}
+
 // Route 3 - Search
 async function search(req, res) {
   const pagesize = req.query.pagesize ? req.query.pagesize : 10;
@@ -192,9 +212,9 @@ async function recommendation(req, res) {
     )
     select * 
     from recipes 
-    where RecipeId in (select * from other_recipes) and RecipeId <> ${x} and RecipeCategory = (select * from recipe_category) 
+    where (RecipeId in (select * from other_recipes) and RecipeId <> ${x}) or RecipeCategory = (select * from recipe_category) 
     order by ReviewCount desc 
-    limit 4;`;
+    limit 8;`;
 
   if (x) {
     // http://localhost:8080/recommendation/54
@@ -284,6 +304,7 @@ module.exports = {
   search,
   searchCount,
   recommendation,
+  reviews,
   homePage_RecentlyPopular,
   homePage_TodaySelected 
 };
