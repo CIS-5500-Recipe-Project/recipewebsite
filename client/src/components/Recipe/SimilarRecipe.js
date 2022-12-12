@@ -3,6 +3,7 @@ import "../css/css.css";
 import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
 import { Link } from "react-router-dom";
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 
 export default function SmilarRecipe({ recipes }) {
   // const imgs = recipes[0].Images.split("\n")[0];
@@ -28,13 +29,6 @@ export default function SmilarRecipe({ recipes }) {
                             alt="Course Title"
                           />
                           <div class="uk-position-cover uk-card-overlay uk-border-rounded-medium"></div>
-                          <div class="uk-position-xsmall uk-position-top-right">
-                            <a
-                              href="#"
-                              class="uk-icon-button uk-like uk-position-z-index uk-position-relative"
-                              data-uk-icon="heart"
-                            ></a>
-                          </div>
                         </div>
                         <div>
                           <h3 class="uk-card-title uk-text-500 uk-margin-small-bottom uk-margin-top">
@@ -42,19 +36,15 @@ export default function SmilarRecipe({ recipes }) {
                           </h3>
                           <div class="uk-text-xsmall uk-text-muted" data-uk-grid="">
                             <div class="uk-width-auto uk-flex uk-flex-middle">
-                              <span
-                                class="uk-rating-filled"
-                                data-uk-icon="icon: star; ratio: 0.7"
-                              ></span>
+                            <StarRoundedIcon fontSize="small" color="warning"/>
                               <span class="uk-margin-xsmall-left">5.0</span>
                               <span>({recipe.ReviewCount})</span>
                             </div>
                             <div class="uk-width-expand uk-text-right">
-                              by placeHolder
+                              by {recipe.AuthorName}
                             </div>
                           </div>
                         </div>
-                        <a href="recipe.html" class="uk-position-cover"></a>
                       </div>
                     </Link>
                   )
