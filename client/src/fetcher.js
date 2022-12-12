@@ -26,6 +26,13 @@ const getRecipeById = async (recipeId) => {
   return res.json()
 }
 
+const getReviewsById = async (recipeId)=>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/reviews/${recipeId}`, {
+    method: 'GET',
+})
+return res.json()
+}
+
 const homePage_RecentlyPopular = async() =>{
   var res = await fetch(`http://${config.server_host}:${config.server_port}/homePage_RecentlyPopular`,{
     method: 'GET',
@@ -40,4 +47,4 @@ const homePage_TodaySelected = async() =>{
   return res.json()
 }
 
-export { getFoodSearch, getFoodSearchCount, getRecipeById, homePage_RecentlyPopular, homePage_TodaySelected};
+export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected};

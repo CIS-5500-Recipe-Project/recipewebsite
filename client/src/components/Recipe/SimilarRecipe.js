@@ -13,7 +13,7 @@ export default function SmilarRecipe({ recipes }) {
         <div class="uk-grid-large" data-uk-grid="">
           <div class="uk-width-expand@m">
             <div class="uk-article">
-              <h3>Similar Recipes</h3>
+              <h3>Others You May Like</h3>
               <div
                 class="uk-child-width-1-2 uk-child-width-1-4@s"
                 data-uk-grid=""

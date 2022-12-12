@@ -22,6 +22,8 @@ app.get("/recipes/:choice", routes.recipes);
 //pageTwo
 app.get("/pageTwo", routes.pageTwo);
 
+app.get("/reviews/:recipeId", routes.reviews);
+
 //Search Page
 app.get("/search/", routes.search);
 app.get("/search/:keyword", routes.search);
