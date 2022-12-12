@@ -194,12 +194,12 @@ async function recommendation(req, res) {
         where RecipeID = ${x}
     ),
     recipe_ingredient AS (
-        SELECT ingredient
+        SELECT RecipeIngredientParts
         FROM recipes
         WHERE RecipeID = ${x})
     select * 
     from recipes 
-    where (RecipeId in (select * from other_recipes) AND RecipeId <> ${x}) OR( RecipeId <> ${x} AND  RecipeCategory = (select * from recipe_category)) OR (ingredient && (select * from recipe_ingredient) AND RecipeId <> ${x})
+    where (RecipeId in (select * from other_recipes) AND RecipeId <> ${x}) AND  (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
     order by ReviewCount desc 
     limit 4;`
 
@@ -215,5 +215,10 @@ async function recommendation(req, res) {
         })
     }
 }
+
+// route 6 - 2 reviews for each specific recipe
+
+
+
 
 module.exports = { recipe, recipes, pageTwo, search, searchCount, recommendation };
