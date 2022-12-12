@@ -4,11 +4,11 @@ const e = require("express");
 
 // // TODO: fill in your connection details here
 const connection = mysql.createConnection({
-    host: config.rds_host,
-    user: config.rds_user,
-    password: config.rds_password,
-    port: config.rds_port,
-    database: config.rds_db,
+  host: config.rds_host,
+  user: config.rds_user,
+  password: config.rds_password,
+  port: config.rds_port,
+  database: config.rds_db,
 });
 connection.connect();
 
@@ -19,50 +19,50 @@ connection.connect();
 // Route 1 All Recipes - Query to grab info of all recipes
 // query:
 async function recipes(req, res) {
-    var inputDescription = req.query.attribute ? req.query.attribute : "";
-    var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
+  var inputDescription = req.query.attribute ? req.query.attribute : "";
+  var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
     FROM recipes
     WHERE Description LIKE '%${inputDescription}%'
     ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
     LIMIT 50`;
 
-    var queryKeyword = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
+  var queryKeyword = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
     FROM recipes
     WHERE Keywords LIKE '%${inputDescription}%'
     ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
     LIMIT 50`;
 
-    var queryAll = `SELECT *
+  var queryAll = `SELECT *
     FROM recipes LIMIT 50`;
 
-    // http://localhost:8080/recipes/description?decription=summer
-    // http://localhost:8080/recipes/description?decription=vegan
-    if (req.params.choice === "description") {
-        connection.query(queryDescription, function (err, results, fields) {
-            if (err) console.log(err);
-            else {
-                console.log(results);
-                res.json(results);
-            }
-        });
-    } else if (req.params.choice === "keyword") {
-        // http://localhost:8080/recipes/keyword?keyword=kid
+  // http://localhost:8080/recipes/description?decription=summer
+  // http://localhost:8080/recipes/description?decription=vegan
+  if (req.params.choice === "description") {
+    connection.query(queryDescription, function (err, results, fields) {
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  } else if (req.params.choice === "keyword") {
+    // http://localhost:8080/recipes/keyword?keyword=kid
 
-        connection.query(queryKeyword, function (err, results, fields) {
-            if (err) console.log(err);
-            else {
-                console.log(results);
-                res.json(results);
-            }
-        });
-    } else {
-        connection.query(queryAll, function (err, results, fields) {
-            if (err) console.log(err);
-            else {
-                res.json(results);
-            }
-        });
-    }
+    connection.query(queryKeyword, function (err, results, fields) {
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  } else {
+    connection.query(queryAll, function (err, results, fields) {
+      if (err) console.log(err);
+      else {
+        res.json(results);
+      }
+    });
+  }
 }
 
 // async function search_images(req, res) {
@@ -83,27 +83,48 @@ async function recipes(req, res) {
 // Route 2
 // TODO:
 async function pageTwo(req, res) {
-    // a GET request to /recipes
-    res.send(`this is page 2`);
+  // a GET request to /recipes
+  res.send(`this is page 2`);
 }
 
 async function recipe(req, res) {
-    var x = parseInt(req.params.recipeId)
-    console.log(typeof x)
-    var queryRecipeWithId = `SELECT * FROM recipes 
-    WHERE RecipeId = ${x}`
+  var x = parseInt(req.params.recipeId);
+  console.log(typeof x);
+  var queryRecipeWithId = `SELECT *
+    FROM recipes 
+    WHERE RecipeId = ${x}`;
 
-    if (x) {
-        // http://localhost:8080/recipe/38
-        connection.query(queryRecipeWithId, function (err, results, fields) {
-            console.log(typeof req.params.recipeId);
-            if (err) console.log(err);
-            else {
-                console.log(results);
-                res.json(results);
-            }
-        })
-    }
+  if (x) {
+    // http://localhost:8080/recipe/38
+    connection.query(queryRecipeWithId, function (err, results, fields) {
+      console.log(typeof req.params.recipeId);
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  }
+}
+
+async function reviews(req,res) {
+
+  var x = parseInt(req.params.recipeId);
+  console.log(typeof x);
+  var query = `SELECT *
+    FROM reviews
+    WHERE RecipeId = ${x}`;
+
+  if (x) {
+    connection.query(query, function (err, results, fields) {
+      console.log(typeof req.params.recipeId);
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  }
 }
 
 // Route 3 - Search
@@ -140,47 +161,43 @@ async function search(req, res) {
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
-    // http://localhost:8080/search/egg
-    connection.query(query, function (err, results, fields) {
-        if (err) console.log(err);
-        else {
-            console.log;
-            res.json(results);
-        }
-    });
+  // http://localhost:8080/search/egg
+  connection.query(query, function (err, results, fields) {
+    if (err) console.log(err);
+    else {
+      console.log;
+      res.json(results);
+    }
+  });
 }
 
 //Route 4 - Search Count
 async function searchCount(req, res) {
-    //   console.log(req.query);
-    const keyword = req.params.keyword ? req.params.keyword : "";
-    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
+  //   console.log(req.query);
+  const keyword = req.params.keyword ? req.params.keyword : "";
 
     var query = `SELECT COUNT(DISTINCT recipes.RecipeId) AS Total
     from recipes
-    WHERE recipes.Name LIKE '%${keyword}%'
-    ${tagQuery}
-    AND DATE(recipes.DatePublished) > '2010-01-01'`;
+    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'`;
 
-    // http://localhost:8080/searchcount/egg
-    connection.query(query, function (err, results, fields) {
-        if (err) console.log(err);
-        else {
-            console.log;
-            res.json(results);
-        }
-    });
+  // http://localhost:8080/searchcount/egg
+  connection.query(query, function (err, results, fields) {
+    if (err) console.log(err);
+    else {
+      console.log;
+      res.json(results);
+    }
+  });
 }
 
-// route 5 - complex query: suggest a recipe 
+// route 5 - complex query: suggest a recipe
 // for example, people who liked recipeId 54 also liked some other recipes
 // suggest the top 5 recipes
 
 async function recommendation(req, res) {
+  var x = parseInt(req.params.recipeId);
 
-    var x = parseInt(req.params.recipeId);
-
-    var complexQuery = `WITH review_authors AS (
+  var complexQuery = `WITH review_authors AS (
     select AuthorId
     FROM reviews 
     where RecipeId = ${x}
@@ -197,21 +214,99 @@ async function recommendation(req, res) {
     )
     select * 
     from recipes 
-    where RecipeId in (select * from other_recipes) AND RecipeId <> ${x} AND  RecipeCategory = (select * from recipe_category) 
+    where (RecipeId in (select * from other_recipes) and RecipeId <> ${x}) or RecipeCategory = (select * from recipe_category) 
     order by ReviewCount desc 
-    limit 5;`
+    limit 8;`;
 
-    if (x) {
-        // http://localhost:8080/recommendation/54
-        connection.query(complexQuery, function (err, results, fields) {
-
-            if (err) console.log(err);
-            else {
-                console.log(results);
-                res.json(results);
-            }
-        })
-    }
+  if (x) {
+    // http://localhost:8080/recommendation/54
+    connection.query(complexQuery, function (err, results, fields) {
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  }
 }
 
-module.exports = { recipe, recipes, pageTwo, search, searchCount, recommendation };
+async function homePage_RecentlyPopular(req, res) {
+  //return the recipes posted on the same month
+  const date = new Date();
+  const currentMonth = date.getMonth() + 1;
+
+  var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+  recipes.Images,
+  AVG(reviews.Rating) as AvgRating,
+  COUNT(reviews.RecipeId) as Comment,
+  recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE MONTH(recipes.DatePublished) = ${currentMonth} AND DATE(recipes.DatePublished) > '2010-01-01'
+  GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment DESC
+  LIMIT 12;`;
+
+  connection.query(Query, function (err, results, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(results);
+      res.json(results);
+    }
+  });
+}
+
+async function homePage_TodaySelected(req, res) {
+    //return the recipes based on the current time
+    const date = new Date();
+    const currentHour = date.getHours();
+    var keywords = "snack";
+
+    if(currentHour >=6 && currentHour<10){  
+        keywords="breakfast";
+    } else if (currentHour>=10 && currentHour<12){
+        keywords="brunch";
+    } else if (currentHour>=12 && currentHour<14){
+        keywords="lunch";
+    } else if(currentHour>=14 && currentHour<17){
+        keywords="snack";
+    } else if(currentHour>=17 && currentHour <21){
+        keywords="dinner";
+    } else {
+        keywords="night";
+    }
+  
+    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+    recipes.Images,
+    AVG(reviews.Rating) as AvgRating,
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    WHERE (recipes.RecipeCategory like '%${keywords}%'
+       or recipes.Keywords like '%${keywords}%')
+       AND DATE(recipes.DatePublished) > '2010-01-01'
+    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+    ORDER BY AvgRating DESC, Comment DESC
+    limit 12;`;
+  
+    connection.query(Query, function (err, results, fields) {
+      if (err) console.log(err);
+      else {
+        console.log(results);
+        res.json(results);
+      }
+    });
+  }
+
+module.exports = {
+  recipe,
+  recipes,
+  pageTwo,
+  search,
+  searchCount,
+  recommendation,
+  reviews,
+  homePage_RecentlyPopular,
+  homePage_TodaySelected 
+};
