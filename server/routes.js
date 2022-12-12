@@ -88,10 +88,11 @@ async function pageTwo(req, res) {
 }
 
 async function recipe(req, res) {
-    var x = parseInt(req.params.recipeId)
-    console.log(typeof x)
-    var queryRecipeWithId = `SELECT * FROM recipes 
-    WHERE RecipeId = ${x}`
+    var x = parseInt(req.params.recipeId);
+    console.log(typeof x);
+    var queryRecipeWithId = `SELECT *
+    FROM recipes 
+    WHERE RecipeId = ${x}`;
 
     if (x) {
         // http://localhost:8080/recipe/38
@@ -102,7 +103,27 @@ async function recipe(req, res) {
                 console.log(results);
                 res.json(results);
             }
-        })
+        });
+    }
+}
+
+async function reviews(req, res) {
+
+    var x = parseInt(req.params.recipeId);
+    console.log(typeof x);
+    var query = `SELECT *
+    FROM reviews
+    WHERE RecipeId = ${x}`;
+
+    if (x) {
+        connection.query(query, function (err, results, fields) {
+            console.log(typeof req.params.recipeId);
+            if (err) console.log(err);
+            else {
+                console.log(results);
+                res.json(results);
+            }
+        });
     }
 }
 
@@ -111,30 +132,30 @@ async function search(req, res) {
     const pagesize = req.query.pagesize ? req.query.pagesize : 10;
     const page = req.query.page ? req.query.page : 1;
     const sort = req.query.sort ? req.query.sort : 1;
-    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
+    const tagQuery = req.query.tag
+        ? `AND recipes.Keywords LIKE '%${req.query.tag}%'`
+        : "";
     // 1=date
     // 2=rating
     // 3=comment
     //   console.log(req.query);
-    var defaultSort = "recipes.DatePublished DESC"
+    var defaultSort = "recipes.DatePublished DESC";
     if (sort == 2) {
-        defaultSort = "AvgRating DESC"
+        defaultSort = "AvgRating DESC";
     } else if (sort == 3) {
-        defaultSort = "Comment DESC"
+        defaultSort = "Comment DESC";
     }
     // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
+    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
     COUNT(reviews.RecipeId) as Comment,
     recipes.DatePublished as Date
     from recipes
-    JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    AND DATE(recipes.DatePublished) > '2010-01-01'
-    WHERE recipes.Name LIKE '%${keyword}%'
-    ${tagQuery}
-    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'
+    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
@@ -152,13 +173,10 @@ async function search(req, res) {
 async function searchCount(req, res) {
     //   console.log(req.query);
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
 
-    var query = `SELECT COUNT(recipes.RecipeId) AS Total
+    var query = `SELECT COUNT(*) as Total
     from recipes
-    WHERE recipes.Name LIKE '%${keyword}%'
-    ${tagQuery}
-    AND DATE(recipes.DatePublished) > '2010-01-01'`;
+    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'`;
 
     // http://localhost:8080/searchcount/egg
     connection.query(query, function (err, results, fields) {
@@ -170,18 +188,17 @@ async function searchCount(req, res) {
     });
 }
 
-// route 5 - complex query: suggest a recipe 
+// route 5 - complex query: suggest a recipe
 // for example, people who liked recipeId 54 also liked some other recipes
 // suggest the top 5 recipes
 
 async function recommendation(req, res) {
-
     var x = parseInt(req.params.recipeId);
 
     var complexQuery = `WITH review_authors AS (
-        select AuthorId
-        FROM reviews 
-        where RecipeId = ${x}
+    select AuthorId
+    FROM reviews 
+    where RecipeId = ${x}
     ),
     other_recipes AS (
         select RecipeId 
@@ -199,26 +216,105 @@ async function recommendation(req, res) {
         WHERE RecipeID = ${x})
     select * 
     from recipes 
-    where (RecipeId in (select * from other_recipes) AND RecipeId <> ${x}) AND  (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
+    where ((RecipeId in (select * from other_recipes) and RecipeId <> ${x})) or (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
     order by ReviewCount desc 
-    limit 4;`
+    limit 8;`;
 
     if (x) {
         // http://localhost:8080/recommendation/54
         connection.query(complexQuery, function (err, results, fields) {
-
             if (err) console.log(err);
             else {
                 console.log(results);
                 res.json(results);
             }
-        })
+        });
     }
 }
 
-// route 6 - 2 reviews for each specific recipe
+async function homePage_RecentlyPopular(req, res) {
+    //return the recipes posted on the same month
+    const date = new Date();
+    const currentMonth = date.getMonth() + 1;
+
+    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+  recipes.Images,
+  AVG(reviews.Rating) as AvgRating,
+  COUNT(reviews.RecipeId) as Comment,
+  recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE MONTH(recipes.DatePublished) = ${currentMonth} AND DATE(recipes.DatePublished) > '2010-01-01'
+  GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment DESC
+  LIMIT 12;`;
+
+    connection.query(Query, function (err, results, fields) {
+        if (err) console.log(err);
+        else {
+            console.log(results);
+            res.json(results);
+        }
+    });
+}
+
+async function homePage_TodaySelected(req, res) {
+    //return the recipes based on the current time
+    const date = new Date();
+    const currentHour = date.getHours();
+    var keywords = "snack";
+
+    if (currentHour >= 6 && currentHour < 10) {
+        keywords = "breakfast";
+    } else if (currentHour >= 10 && currentHour < 12) {
+        keywords = "brunch";
+    } else if (currentHour >= 12 && currentHour < 14) {
+        keywords = "lunch";
+    } else if (currentHour >= 14 && currentHour < 17) {
+        keywords = "snack";
+    } else if (currentHour >= 17 && currentHour < 21) {
+        keywords = "dinner";
+    } else {
+        keywords = "night";
+    }
+
+    // route 6 - 2 reviews for each specific recipe
 
 
 
 
-module.exports = { recipe, recipes, pageTwo, search, searchCount, recommendation };
+    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+    recipes.Images,
+    AVG(reviews.Rating) as AvgRating,
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    WHERE (recipes.RecipeCategory like '%${keywords}%'
+       or recipes.Keywords like '%${keywords}%')
+       AND DATE(recipes.DatePublished) > '2010-01-01'
+    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+    ORDER BY AvgRating DESC, Comment DESC
+    limit 12;`;
+
+
+    connection.query(Query, function (err, results, fields) {
+        if (err) console.log(err);
+        else {
+            console.log(results);
+            res.json(results);
+        }
+    });
+}
+
+module.exports = {
+    recipe,
+    recipes,
+    pageTwo,
+    search,
+    searchCount,
+    recommendation,
+    reviews,
+    homePage_RecentlyPopular,
+    homePage_TodaySelected
+};
