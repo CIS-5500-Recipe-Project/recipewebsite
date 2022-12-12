@@ -122,6 +122,8 @@ async function search(req, res) {
     } else if(sort == 3) {
         defaultSort = "Comment DESC"
     }
+
+    // console.log(tagQuery)
     // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
     const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
@@ -130,7 +132,7 @@ async function search(req, res) {
     COUNT(reviews.RecipeId) as Comment,
     recipes.DatePublished as Date
     from recipes
-    JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
     AND DATE(recipes.DatePublished) > '2010-01-01'
     WHERE recipes.Name LIKE '%${keyword}%'
     ${tagQuery}
@@ -154,7 +156,7 @@ async function searchCount(req, res) {
     const keyword = req.params.keyword ? req.params.keyword : "";
     const tagQuery = req.query.tag ? `AND recipes.Keywords LIKE '%${req.query.tag}%'` : "";
 
-    var query = `SELECT COUNT(recipes.RecipeId) AS Total
+    var query = `SELECT COUNT(DISTINCT recipes.RecipeId) AS Total
     from recipes
     WHERE recipes.Name LIKE '%${keyword}%'
     ${tagQuery}

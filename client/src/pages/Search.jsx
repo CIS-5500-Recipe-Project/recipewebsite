@@ -35,6 +35,7 @@ export default function Search() {
   }, []);
 
   const handleSearch = (event, value) => {
+      setResult([]);
     console.log("Running Search");
     getFoodSearchCount(food, '').then((res) => {
       // console.log(res);
@@ -47,6 +48,7 @@ export default function Search() {
   };
 
   const handlePagination = (event, value) => {
+      setResult([]);
     getFoodSearch(food, value, 12, foodSort, '').then((res) => {
       // console.log(res);
       setResult(res);
