@@ -27,6 +27,8 @@ app.get("/search/", routes.search);
 app.get("/search/:keyword", routes.search);
 app.get("/searchcount/", routes.searchCount);
 app.get("/searchcount/:keyword", routes.searchCount);
+app.get("/homePage_RecentlyPopular", routes.homePage_RecentlyPopular);
+app.get("/homePage_TodaySelected", routes.homePage_TodaySelected);
 
 //complex query
 app.get("/recommendation/:recipeId", routes.recommendation);

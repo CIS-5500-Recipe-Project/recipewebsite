@@ -23,8 +23,6 @@ export default function Carousel() {
                 Choose from thousands of recipes
               </h1>
               <p class="uk-text-secondary">
-                Appropriately integrate technically sound value with scalable
-                infomediaries negotiate sustainable strategic theme areas
               </p>
               <a
                 class="uk-text-secondary uk-text-600 uk-text-small hvr-forward"
