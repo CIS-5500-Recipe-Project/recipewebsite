@@ -42,7 +42,7 @@ export default function Topbar() {
                 </li> */}
               </ul>
             </div>
-            <div className="uk-navbar-right">
+            {/* <div className="uk-navbar-right">
               <ul className="uk-navbar-nav uk-visible@m">
                 <li>
                   <a>Sign In</a>
@@ -65,7 +65,7 @@ export default function Topbar() {
               >
                 <span data-uk-navbar-toggle-icon />
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>
