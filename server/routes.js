@@ -65,23 +65,7 @@ async function recipes(req, res) {
     }
 }
 
-// async function search_images(req, res) {
-//     //TODO: match to images of specific recipe id
-//     const recipeId = req.params.RecipeId ? req.params.RecipeId : -1
-//     connection.query(`SELECT Images
-//         FROM recipes
-//         WHERE RecipeId = '${recipeId}'`, function (error, results, fields) {
-//         if (error) {
-//             console.log(error)
-//             res.json({ error: error })
-//         } else if (results) {
-//             res.json({ results: results })
-//         }
-//     })
-// }
-
 // Route 2
-// TODO:
 async function pageTwo(req, res) {
     // a GET request to /recipes
     res.send(`this is page 2`);
@@ -262,50 +246,42 @@ async function homePage_TodaySelected(req, res) {
     //return the recipes based on the current time
     const date = new Date();
     const currentHour = date.getHours();
-    var keywords = "snack";
+    var str = "snack";
 
     if (currentHour >= 6 && currentHour < 10) {
-        keywords = "breakfast";
+        str = "breakfast";
     } else if (currentHour >= 10 && currentHour < 12) {
-        keywords = "brunch";
+        str = "brunch";
     } else if (currentHour >= 12 && currentHour < 14) {
-        keywords = "lunch";
+        str = "lunch";
     } else if (currentHour >= 14 && currentHour < 17) {
-        keywords = "snack";
+        str = "snack";
     } else if (currentHour >= 17 && currentHour < 21) {
-        keywords = "dinner";
+        str = "dinner";
     } else {
-        keywords = "night";
+        str = "night";
     }
 
-    // route 6 - 2 reviews for each specific recipe
-
-
-
-
-    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
-    recipes.Images,
-    AVG(reviews.Rating) as AvgRating,
-    COUNT(reviews.RecipeId) as Comment,
-    recipes.DatePublished as Date
+    // route 6 - reviews for each specific recipe
+    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    WHERE (recipes.RecipeCategory like '%${keywords}%'
-       or recipes.Keywords like '%${keywords}%')
-       AND DATE(recipes.DatePublished) > '2010-01-01'
-    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
-    ORDER BY AvgRating DESC, Comment DESC
-    limit 12;`;
+    WHERE recipes.Keywords like '%${str}%' or recipes.Description like '%${str}%'
+    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+    ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+    LIMIT 12;`;
 
 
     connection.query(Query, function (err, results, fields) {
+        console.log(results);
         if (err) console.log(err);
         else {
-            console.log(results);
             res.json(results);
         }
     });
 }
+
+//Top 50 
 
 module.exports = {
     recipe,

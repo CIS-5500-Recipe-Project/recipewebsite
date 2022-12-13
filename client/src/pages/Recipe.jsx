@@ -4,10 +4,8 @@ import RecipeContent from "../components/Recipe/RecipeContent.js";
 import SimilarRecipe from "../components/Recipe/SimilarRecipe";
 import React, { useState, useEffect, useLocation } from "react";
 import { useParams } from "react-router-dom";
-import { getRecipeById, getReviewsById } from "../fetcher.js";
+import { getRecipeById, getReviewsById, getSimilarRecipes} from "../fetcher.js";
 import Loading from "../components/Progress";
-import { getSimilarRecipes } from "../components/fetcher";
-import dummy from "../components/dummy.json";
 
 
 export default function Recipe() {
