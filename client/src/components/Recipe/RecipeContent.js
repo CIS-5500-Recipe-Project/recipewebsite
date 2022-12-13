@@ -9,8 +9,24 @@ import TextField from "@mui/material/TextField";
 import {Link } from "react-router-dom";
 import {getFormattedDate} from "../helper"
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
 
-export default function RecipeContent({ recipe, reviews }) {
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import Button from '@mui/material/Button';
+
+export default function RecipeContent({ recipe, reviews, submitComment, star, setStar }) {
   const instructions = recipe[0].RecipeInstructions.split('\n')
   var ingredients_str = recipe[0].ingredient
   const ingredients = ingredients_str.substring(2, ingredients_str.length-2).split('\",\"')
@@ -25,6 +41,23 @@ export default function RecipeContent({ recipe, reviews }) {
       setReviewPage([value]);
   };
 
+  
+  const [checked, setChecked] = React.useState([0]);
+
+  const handleToggle = (value,ele) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+
+
   // console.log(typeof tags)
   // console.log("review");
   // console.log(reviews);
@@ -35,7 +68,7 @@ export default function RecipeContent({ recipe, reviews }) {
           <div class="uk-width-expand@m">
             <div class="uk-article">
               <h3>How to Make It</h3>
-              {instructions.map((instruction, key) => (
+              {/* {instructions.map((instruction, key) => (
                 <>
                   <div id={key} class="uk-grid-small uk-margin-medium-top" data-uk-grid="">
                     <div class="uk-width-expand">
@@ -51,7 +84,38 @@ export default function RecipeContent({ recipe, reviews }) {
                     </div>
                   </div>
                 </>
-              ))}
+              ))} */}
+              {instructions.map((value,index) => {
+                      value = value.replace(/[^a-z0-9, ]/gi, '').trim().replace(/(^\d+t)/gi, '');
+                      const labelId = `checkbox-list-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          // secondaryAction={
+                          //   <IconButton edge="end" aria-label="comments">
+                          //     <CommentIcon />
+                          //   </IconButton>
+                          // }
+                          disablePadding
+                        >
+                          <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(value) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText class="listfont" style={checked.indexOf(value) !== -1 ? {textDecoration: "line-through"} : {textDecoration:"none"} } id={labelId} primary={`${index+1}. ${value}`} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })
+
+              }
+              
 
               <hr class="uk-margin-medium-top uk-margin-large-bottom" />
               <h3>Comments</h3>
@@ -119,18 +183,65 @@ export default function RecipeContent({ recipe, reviews }) {
               </ul>
               <hr class="uk-margin-medium-top" />
               <h3>Leave your comment</h3>
-              <div class="uk-margin-medium-bottom">
-                <TextField fullWidth id="outlined-textarea" label="Leave your comment..." placeholder="Placeholder" multiline />
+              <div class="comment-box">
+                <TextField sx={{ width: '25ch' }}
+                  id="comment-name"
+                  label="Name"
+                  variant="outlined"
+                />
+                <div class="comment-box-star">
+                  Rating: 
+                <Rating
+                  name="simple-controlled"
+                  value={star}
+                  onChange={(event, newValue) => {
+                    setStar(newValue);
+                  }}
+                />
+                </div>
               </div>
-              <button class="uk-button uk-button-default">Submit</button>
+              <div class="uk-margin-medium-bottom">
+                <TextField fullWidth id="comment-detail" label="Leave your comment..." placeholder="Placeholder" multiline />
+              </div>
+              <Button onClick={submitComment} variant="contained">Submit</Button>
             </div>
           </div>
           <div class="uk-width-1-3@m">
             <h3>Ingredients</h3>
-            <ul class="uk-list uk-list-large uk-list-divider uk-margin-medium-top">
-              {ingredients.map((ingredient, key) => (
+            <ul class="uk-list uk-list-small uk-list-divider uk-margin-medium-top">
+              {/* {ingredients.map((ingredient, key) => (
                 <li>{ingredient}</li>
-              ))}
+              ))} */}
+              
+              {ingredients.map((value,index) => {
+                      value = value.replace(/[^a-z0-9, ]/gi, '').trim().replace(/(^\d+t)/gi, '');
+                      const labelId = `checkbox-list-label-${value}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          // secondaryAction={
+                          //   <IconButton edge="end" aria-label="comments">
+                          //     <CommentIcon />
+                          //   </IconButton>
+                          // }
+                          disablePadding
+                        >
+                          <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(value) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText class="listfont" style={checked.indexOf(value) !== -1 ? {textDecoration: "line-through"} : {textDecoration:"none"} } id={labelId} primary={`${value}`} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })
+                  }
             </ul>
             <h3 class="uk-margin-large-top">Tags</h3>
             <div class="uk-margin-medium-top" data-uk-margin="">
