@@ -68,6 +68,20 @@ const homePage_TodaySelected = async () => {
   return res.json()
 }
 
+const postComment = async (data) => {
+  // console.log(data)
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/postComment`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  // console.log(res)
+  return res.json()
+}
+
+export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment };
 
 export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected };
 export { getDefaultRecipes, getSimilarRecipes, getRecipes };
