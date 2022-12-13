@@ -1,7 +1,7 @@
 import { config } from '../config'
 
 const getRecipes = async (choice) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes${choice}`, {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${choice}`, {
         method: 'GET',
     })
     return res.json()
