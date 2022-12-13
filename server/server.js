@@ -39,15 +39,16 @@ app.get("/recommendation/:recipeId", routes.recommendation);
 //Post event
 app.post("/postComment", routes.postComment);
 
+//register
+app.post("/register",routes.register);
+
+//login
+app.get("/login",routes.login);
+
 app.listen(config.server_port, () => {
     console.log(
         `Server running at http://${config.server_host}:${config.server_port}/`
     );
 });
-
-
-
-
-
 
 module.exports = app;

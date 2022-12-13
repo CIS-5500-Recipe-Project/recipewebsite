@@ -12,6 +12,60 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
+async function login(req, res){ 
+  const email = req.body.email;
+  const password = req.body.password;
+  
+  var query = `
+  SELECT *
+  FROM users
+  WHERE email = '${email}' and password = '${password}';`;
+
+  connection.query(query, function (err, results) {
+    if (err){
+      res.send({err:err});
+    }
+    else {
+      if(results.length>0){
+        res.json(results)
+      } else{
+        res.send({message:"Wrong email/password combination"});
+      }   
+    }
+  });
+}
+
+async function register(req, res) {
+  const AuthorName = req.body.AuthorName;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  var check = `SELECT email
+  FROM users
+  WHERE email = '${email}';`
+
+  var query = `
+  INSERT INTO users (AuthorId, AuthorName, email, password)
+  VALUES (null, '${AuthorName}', '${email}', '${password}');
+  `
+  connection.query(check, function(err,result){
+    if(err) console.log(err);
+    else{
+      //user already exist
+      if(result.length>0){
+        res.send({message:"user already exists, please go to the login page"});
+      } else {
+        connection.query(query, function (err, results) {
+          if (err) console.log(err);
+          else {
+            res.json(results);
+          }
+        });
+      }
+    }
+  })
+}
+
 
 //Route 1: Recipes Page - get recipes by selected category
 async function recipes(req, res) {
@@ -377,5 +431,7 @@ module.exports = {
   reviews,
   homePage_RecentlyPopular,
   homePage_TodaySelected,
-  postComment
+  postComment,
+  register,
+  login
 };

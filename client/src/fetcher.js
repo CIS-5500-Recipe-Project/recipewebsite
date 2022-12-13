@@ -60,4 +60,30 @@ const postComment = async(data) =>{
   return res.json()
 }
 
-export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment};
+const register = async(email, AuthorName, password) =>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/register`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email:email,
+      AuthorName:AuthorName,
+      password: password
+    })
+  })
+  return res.json()
+}
+
+const login = async(email, password) =>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/login`,{
+    method: 'GET',
+    body: JSON.stringify({
+      email:email,
+      password: password
+    })
+  })
+  return res.json()
+}
+
+export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment, register, login};
