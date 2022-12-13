@@ -86,7 +86,7 @@ async function recipes(req, res) {
     connection.query(breakfast_brunch_query, function (err, results, fields) {
       if (err) console.log(err);
       else {
-        console.log(results);
+        // console.log(results);
         res.json(results);
       }
     });
@@ -94,7 +94,7 @@ async function recipes(req, res) {
     connection.query(appetizer_snack_query, function (err, results, fields) {
       if (err) console.log(err);
       else {
-        console.log(results);
+        // console.log(results);
         res.json(results);
       }
     });
@@ -164,7 +164,7 @@ async function recipe(req, res) {
       console.log(typeof req.params.recipeId);
       if (err) console.log(err);
       else {
-        console.log(results);
+        // console.log(results);
         res.json(results);
       }
     });
@@ -173,7 +173,7 @@ async function recipe(req, res) {
 
 async function reviews(req, res) {
   var x = parseInt(req.params.recipeId);
-  console.log(typeof x);
+  // console.log(typeof x);
   var query = `SELECT *
     FROM reviews
     WHERE RecipeId = ${x}`;
@@ -183,7 +183,7 @@ async function reviews(req, res) {
       console.log(typeof req.params.recipeId);
       if (err) console.log(err);
       else {
-        console.log(results);
+        // console.log(results);
         res.json(results);
       }
     });
@@ -230,7 +230,7 @@ async function search(req, res) {
   connection.query(query, function (err, results, fields) {
     if (err) console.log(err);
     else {
-      console.log;
+      // console.log;
       res.json(results);
     }
   });
@@ -249,7 +249,7 @@ async function searchCount(req, res) {
   connection.query(query, function (err, results, fields) {
     if (err) console.log(err);
     else {
-      console.log;
+      // console.log;
       res.json(results);
     }
   });
@@ -288,7 +288,7 @@ async function recommendation(req, res) {
     connection.query(complexQuery, function (err, results, fields) {
       if (err) console.log(err);
       else {
-        console.log(results);
+        // console.log(results);
         res.json(results);
       }
     });
@@ -315,7 +315,7 @@ async function homePage_RecentlyPopular(req, res) {
   connection.query(Query, function (err, results, fields) {
     if (err) console.log(err);
     else {
-      console.log(results);
+      // console.log(results);
       res.json(results);
     }
   });
@@ -352,13 +352,56 @@ async function homePage_TodaySelected(req, res) {
   connection.query(Query, function (err, results, fields) {
     if (err) console.log(err);
     else {
-      console.log(str);
-      console.log(results);
+      // console.log(str);
+      // console.log(results);
       res.json(results);
     }
   });
 }
 
+
+const getFormattedDate = (date) => {
+    let year = date.getFullYear();
+    let month = (1 + date.getMonth()).toString().padStart(2, '0');
+    let day = date.getDate().toString().padStart(2, '0');
+
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    seconds = seconds < 10 ? '0'+seconds : seconds;
+
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
+}
+
+async function postComment(req, res) {
+  const date = getFormattedDate(new Date());
+  const rating = parseInt(req.body.star)
+  const recipeId = parseInt(req.body.recipeId);
+  const name = req.body.name
+  const comment = req.body.comment
+  // INSERT INTO reviews (RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
+  
+  var Query = `
+  INSERT INTO reviews (AuthorId, RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
+  VALUES (1234567, ${recipeId}, '${name}', ${rating}, '${comment}', DATE('${date}'), DATE('${date}'));
+  `
+
+  // console.log(Query)
+  connection.query(Query, function (err, results, fields) {
+    if (err) console.log(err);
+    else {
+      // console.log(str);
+      // console.log(results);
+      res.json(results);
+    }
+  });
+
+
+}
 module.exports = {
   recipe,
   recipes,
@@ -369,4 +412,5 @@ module.exports = {
   reviews,
   homePage_RecentlyPopular,
   homePage_TodaySelected,
+  postComment
 };
