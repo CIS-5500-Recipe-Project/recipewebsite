@@ -40,11 +40,16 @@ export default function Search() {
     });
 
     getFoodSearch(food, 1, 12, foodSort, "").then((res) => {
-      setResult(res);
+      if(res.length==0) {
+        setResult(null);
+      } else {
+        setResult(res);
+      }
     });
   }, []);
 
   const handleSearch = (event, value) => {
+      setResult([]);
     console.log("Running Search");
     getFoodSearchCount(food, "").then((res) => {
       // console.log(res);
@@ -52,21 +57,34 @@ export default function Search() {
     });
     getFoodSearch(food, 1, 12, foodSort, "").then((res) => {
       // console.log(res);
-      setResult(res);
+      if(res.length==0) {
+        setResult(null);
+      } else {
+        setResult(res);
+      }
     });
     navigate(`/Search/${food}`);
   };
 
   const handlePagination = (event, value) => {
-    getFoodSearch(food, value, 12, foodSort, "").then((res) => {
+      setResult([]);
+    getFoodSearch(food, value, 12, foodSort, '').then((res) => {
       // console.log(res);
-      setResult(res);
+      if(res.length==0) {
+        setResult(null);
+      } else {
+        setResult(res);
+      }
     });
   };
   const handleSort = (event, target) => {
     setFoodSort(target.props.value);
     getFoodSearch(food, 1, 12, target.props.value, "").then((res) => {
-      setResult(res);
+      if(res.length==0) {
+        setResult(null);
+      } else {
+        setResult(res);
+      }
     });
   };
 
@@ -135,7 +153,7 @@ export default function Search() {
             class="uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m uk-margin-medium-top"
             data-uk-grid=""
           >
-            {result.length > 0 ? (
+            {result != null && result.length > 0 ? (
               result.map((ele, index) => {
                 return (
                   <Link to={`/recipe/${ele.RecipeId}`}>
@@ -157,7 +175,8 @@ export default function Search() {
                 );
               })
             ) : (
-              <Loading />
+                result != null ?
+              <Loading /> : <b>No Recipe Found</b>
             )}
           </div>
           <div class="uk-margin-large-top uk-text-small">

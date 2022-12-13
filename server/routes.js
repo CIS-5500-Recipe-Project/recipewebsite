@@ -18,45 +18,110 @@ connection.connect();
 
 // Route 1 All Recipes - Query to grab info of all recipes
 // query:
-async function recipes(req, res) {
-    var inputDescription = req.query.attribute ? req.query.attribute : "";
-    var queryDescription = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
-    FROM recipes
-    WHERE Description LIKE '%${inputDescription}%'
-    ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
-    LIMIT 50`;
 
-    var queryKeyword = `SELECT RecipeId, Name, AggregatedRating, ReviewCount, DatePublished
-    FROM recipes
-    WHERE Keywords LIKE '%${inputDescription}%'
-    ORDER BY ReviewCount DESC, AggregatedRating DESC, DatePublished DESC
-    LIMIT 50`;
+async function recipes(req, res) {
+    var choice = req.params.choice;
+
+    //General for all others
+    var query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%'
+  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
+
+    //Breakfast & Brunch
+    var breakfast_brunch_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE Keywords LIKE '%Breakfast%’ or Keywords LIKE ‘%Brunch%’
+  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
+
+    //Appetizers & Snack
+    var appetizer_snack_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE Keywords LIKE '%Appetizer%' or Keywords LIKE ‘%snack%’
+  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
+
+    //Grilling & BBQ
+    var grilling_bbq_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE Keywords LIKE '%grill%' or Keywords LIKE ‘%bbq%’
+  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  HAVING AVG(reviews.Rating) > 4.5
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
+
+    //query keto diets
+    var keto_query = `WITH DietTable AS (
+   SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
+   FROM recipes
+   )
+  SELECT recipes.RecipeId, recipes.Name, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
+  LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
+  WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1)
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
+
+    //query quick and easy meal to make
+    var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  from recipes
+  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  WHERE recipes.NumOfSteps <=5 
+  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+  LIMIT 30;`;
 
     var queryAll = `SELECT *
     FROM recipes LIMIT 50`;
 
-    // http://localhost:8080/recipes/description?decription=summer
-    // http://localhost:8080/recipes/description?decription=vegan
-    if (req.params.choice === "description") {
-        connection.query(queryDescription, function (err, results, fields) {
+    if (choice === "Breakfast & Brunch") {
+        connection.query(breakfast_brunch_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
                 console.log(results);
                 res.json(results);
             }
         });
-    } else if (req.params.choice === "keyword") {
-        // http://localhost:8080/recipes/keyword?keyword=kid
-
-        connection.query(queryKeyword, function (err, results, fields) {
+    } else if (choice === "Appetizers & Snack") {
+        connection.query(appetizer_snack_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
                 console.log(results);
+                res.json(results);
+            }
+        });
+    } else if (choice === "Grilling & BBQ") {
+        connection.query(grilling_bbq_query, function (err, results, fields) {
+            if (err) console.log(err);
+            else {
+                res.json(results);
+            }
+        });
+    } else if (choice === "Keto") {
+        connection.query(keto_query, function (err, results, fields) {
+            if (err) console.log(err);
+            else {
+                res.json(results);
+            }
+        });
+    } else if (choice === "Quick & Easy") {
+        connection.query(quick_and_easy_query, function (err, results, fields) {
+            if (err) console.log(err);
+            else {
                 res.json(results);
             }
         });
     } else {
-        connection.query(queryAll, function (err, results, fields) {
+        connection.query(query, function (err, results, fields) {
             if (err) console.log(err);
             else {
                 res.json(results);
@@ -92,7 +157,6 @@ async function recipe(req, res) {
 }
 
 async function reviews(req, res) {
-
     var x = parseInt(req.params.recipeId);
     console.log(typeof x);
     var query = `SELECT *
@@ -129,17 +193,21 @@ async function search(req, res) {
     } else if (sort == 3) {
         defaultSort = "Comment DESC";
     }
+
+    // console.log(tagQuery)
     // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+    const query = `SELECT reviews.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
     COUNT(reviews.RecipeId) as Comment,
     recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'
-    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+    AND DATE(recipes.DatePublished) > '2010-01-01'
+    WHERE recipes.Name LIKE '%${keyword}%'
+    ${tagQuery}
+    GROUP BY reviews.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
@@ -249,33 +317,37 @@ async function homePage_TodaySelected(req, res) {
     var str = "snack";
 
     if (currentHour >= 6 && currentHour < 10) {
-        str = "breakfast";
+        keywords = "breakfast";
     } else if (currentHour >= 10 && currentHour < 12) {
-        str = "brunch";
+        keywords = "brunch";
     } else if (currentHour >= 12 && currentHour < 14) {
-        str = "lunch";
+        keywords = "lunch";
     } else if (currentHour >= 14 && currentHour < 17) {
-        str = "snack";
+        keywords = "snack";
     } else if (currentHour >= 17 && currentHour < 21) {
-        str = "dinner";
+        keywords = "dinner";
     } else {
-        str = "night";
+        keywords = "night";
     }
 
-    // route 6 - reviews for each specific recipe
-    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+    recipes.Images,
+    AVG(reviews.Rating) as AvgRating,
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    WHERE recipes.Keywords like '%${str}%' or recipes.Description like '%${str}%'
-    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
-    ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
-    LIMIT 12;`;
-
+    WHERE (recipes.RecipeCategory like '%${keywords}%'
+       or recipes.Keywords like '%${keywords}%')
+       AND DATE(recipes.DatePublished) > '2010-01-01'
+    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+    ORDER BY AvgRating DESC, Comment DESC
+    limit 12;`;
 
     connection.query(Query, function (err, results, fields) {
-        console.log(results);
         if (err) console.log(err);
         else {
+            console.log(results);
             res.json(results);
         }
     });
@@ -292,5 +364,5 @@ module.exports = {
     recommendation,
     reviews,
     homePage_RecentlyPopular,
-    homePage_TodaySelected
+    homePage_TodaySelected,
 };
