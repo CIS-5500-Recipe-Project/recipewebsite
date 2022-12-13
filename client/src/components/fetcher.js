@@ -28,6 +28,6 @@ const getSimilarRecipes = async (recipeId) => {
     return res.json();
 }
 
-export { getDefaultRecipes, getRecipeById, getSimilarRecipes };
+export { getDefaultRecipes, getRecipeById, getSimilarRecipes, getRecipes};
 
 // http://127.0.0.1:8080/recommendation/410347
