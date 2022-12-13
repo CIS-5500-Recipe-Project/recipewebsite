@@ -2,6 +2,8 @@ import "../css/main.css";
 import "../css/css.css";
 import "../css/css1.css";
 import "uikit/dist/js/uikit.js";
+import React, { useState, useEffect } from "react";
+import Pagination from "@mui/material/Pagination";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import {Link } from "react-router-dom";
@@ -13,9 +15,17 @@ export default function RecipeContent({ recipe, reviews }) {
   var keywords_str = recipe[0].Keywords
   const tags = keywords_str=="[None]"? []: keywords_str.substring(2,keywords_str.length-2).split('\' \'')
   const reviewPageCount = Math.ceil(reviews.length / 5);
-  console.log(typeof tags)
-  console.log("review");
-  console.log(reviews);
+
+  const [reviewPage, setReviewPage] = useState([1]);
+
+    
+  const handleReviewPagination = (event, value) => {
+      setReviewPage([value]);
+  };
+
+  // console.log(typeof tags)
+  // console.log("review");
+  // console.log(reviews);
   return (
     < div class="uk-section uk-section-default" >
       <div class="uk-container uk-container-small">
@@ -47,7 +57,7 @@ export default function RecipeContent({ recipe, reviews }) {
                 <li>
                   <div>
                   { (
-              reviews.map((ele, index) => {
+              reviews.filter((ele,i)=>{return i >= (reviewPage-1)*5 && i < (reviewPage)*5}).map((ele, index) => {
                 return (
                   <ul class="uk-comment-list uk-margin-medium-top">
                   <li>
@@ -91,6 +101,13 @@ export default function RecipeContent({ recipe, reviews }) {
                 );
               })
             ) }
+          <div class="uk-margin-large-top uk-text-small">
+            <Pagination
+              count={Math.ceil(reviews.length / 5)}
+              onChange={handleReviewPagination}
+              color="primary"
+            />
+          </div>
             
             </div>
                   
