@@ -5,6 +5,7 @@ import Search from "./pages/Search";
 import Home from "./pages/Home";
 
 function App() {
+  //test
   return (
     <Router>
       <Routes>
