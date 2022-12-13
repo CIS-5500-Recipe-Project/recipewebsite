@@ -70,4 +70,4 @@ const homePage_TodaySelected = async () => {
 
 
 export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected };
-export { getDefaultRecipes, getSimilarRecipes };
+export { getDefaultRecipes, getSimilarRecipes, getRecipes };
