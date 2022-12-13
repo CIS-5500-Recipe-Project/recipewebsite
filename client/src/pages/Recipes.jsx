@@ -8,7 +8,7 @@ export default function Recipes() {
                               "Low-Carb", "Gluten-Free"];
   const worldCusineType = ["Mexican", "Italian", "Indian", "Thai", "Korean", "French", "Chinese", "Japanese", "Spannish"]; 
   const seasonalType = ["Spring", "Summer", "Fall", "Winter"];
-  const holidayType = ["Valentine's Day", "St. Patrick's Day", "Easter", "Mother's Day", "Meomorial Day", "4th of July",
+  const holidayType = ["Valentine's Day", "St. Patrick's Day", "Easter", "Mother's Day", "Memorial Day", "4th of July",
                         "Halloween", "Thanksgiving", "Christmas", "New Year's"]
   const specialOccasionsType = ["Dinner Party", "Game Day", "Baby Shower", "Wedding", "Birthday Party", "Graduation"]
  
