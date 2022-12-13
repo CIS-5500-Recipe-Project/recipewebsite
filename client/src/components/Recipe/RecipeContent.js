@@ -103,13 +103,15 @@ export default function RecipeContent({ recipe, reviews }) {
                 );
               })
             ) }
-          <div class="uk-margin-large-top uk-text-small">
-            <Pagination
-              count={Math.ceil(reviews.length / 5)}
-              onChange={handleReviewPagination}
-              color="primary"
-            />
-          </div>
+              {reviews.length > 0 ?
+              (<div class="uk-margin-large-top uk-text-small">
+                <Pagination
+                  count={Math.ceil(reviews.length / 5)}
+                  onChange={handleReviewPagination}
+                  color="primary"
+                />
+              </div>) : ""
+          }
             
             </div>
                   
