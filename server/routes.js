@@ -23,37 +23,37 @@ async function recipes(req, res) {
     var choice = req.params.choice;
 
     //General for all others
-    var query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%'
+  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%' or recipes.Name LIKE '%${choice}%'
   GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
     //Breakfast & Brunch
-    var breakfast_brunch_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var breakfast_brunch_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%Breakfast%’ or Keywords LIKE ‘%Brunch%’
+  WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%Brunch%'
   GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
     //Appetizers & Snack
-    var appetizer_snack_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  from recipes
-  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%Appetizer%' or Keywords LIKE ‘%snack%’
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
-  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
-  LIMIT 30;`;
+    var appetizer_snack_query = `SELECT recipes.RecipeId, recipes.Name,recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%snack%'
+    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+    ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
+    LIMIT 30;`;
 
     //Grilling & BBQ
-    var grilling_bbq_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var grilling_bbq_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%grill%' or Keywords LIKE ‘%bbq%’
+  WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%bbq%'
   GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
   HAVING AVG(reviews.Rating) > 4.5
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
@@ -64,7 +64,7 @@ async function recipes(req, res) {
    SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
    FROM recipes
    )
-  SELECT recipes.RecipeId, recipes.Name, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+  SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
   LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
   WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1)
@@ -72,7 +72,7 @@ async function recipes(req, res) {
   LIMIT 30;`;
 
     //query quick and easy meal to make
-    var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE recipes.NumOfSteps <=5 
@@ -80,8 +80,8 @@ async function recipes(req, res) {
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
-    var queryAll = `SELECT *
-    FROM recipes LIMIT 50`;
+    // var queryAll = `SELECT *
+    // FROM recipes LIMIT 50`;
 
     if (choice === "Breakfast & Brunch") {
         connection.query(breakfast_brunch_query, function (err, results, fields) {
@@ -110,6 +110,7 @@ async function recipes(req, res) {
         connection.query(keto_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
+                console.log("keto result:" + results);
                 res.json(results);
             }
         });
