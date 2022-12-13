@@ -9,7 +9,7 @@ import {Link } from "react-router-dom";
 export default function RecipeContent({ recipe, reviews }) {
   const instructions = recipe[0].RecipeInstructions.split('\n')
   var ingredients_str = recipe[0].ingredient
-  const ingredients = ingredients_str.substring(1, ingredients_str.length-1).split('\",\"')
+  const ingredients = ingredients_str.substring(2, ingredients_str.length-2).split('\",\"')
   var keywords_str = recipe[0].Keywords
   const tags = keywords_str=="[None]"? []: keywords_str.substring(2,keywords_str.length-2).split('\' \'')
   const reviewPageCount = Math.ceil(reviews.length / 5);
@@ -108,7 +108,7 @@ export default function RecipeContent({ recipe, reviews }) {
             <h3>Ingredients</h3>
             <ul class="uk-list uk-list-large uk-list-divider uk-margin-medium-top">
               {ingredients.map((ingredient, key) => (
-                <li>{ingredient.replace(/[^a-z0-9, ]/gi, '')}</li>
+                <li>{ingredient}</li>
               ))}
             </ul>
             <h3 class="uk-margin-large-top">Tags</h3>
