@@ -7,6 +7,8 @@ import Pagination from "@mui/material/Pagination";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import {Link } from "react-router-dom";
+import {getFormattedDate} from "../helper"
+
 
 export default function RecipeContent({ recipe, reviews }) {
   const instructions = recipe[0].RecipeInstructions.split('\n')
@@ -83,7 +85,7 @@ export default function RecipeContent({ recipe, reviews }) {
                           </h4>
                           <p class="uk-comment-meta uk-margin-remove">
                             <a class="uk-link-reset" href="#">
-                              {Date(ele.DateSubmitted)}
+                              {getFormattedDate(new Date(ele.DateSubmitted))}
                             </a>
                           </p>
                           <Rating name="Overall Rating" value={ele.Rating} precision={0.1} readOnly />
