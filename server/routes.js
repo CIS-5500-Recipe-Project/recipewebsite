@@ -71,7 +71,7 @@ async function recipes(req, res) {
     var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE recipes.NumOfSteps <=5 
+  WHERE recipes.NumOfSteps <=5
   GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
@@ -81,6 +81,7 @@ async function recipes(req, res) {
             if (err) console.log(err);
             else {
                 // console.log(results);
+                // console.log(results);
                 res.json(results);
             }
         });
@@ -88,6 +89,7 @@ async function recipes(req, res) {
         connection.query(appetizer_snack_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
+                // console.log(results);
                 // console.log(results);
                 res.json(results);
             }
@@ -134,7 +136,7 @@ async function recipe(req, res) {
     var x = parseInt(req.params.recipeId);
     console.log(typeof x);
     var queryRecipeWithId = `SELECT *
-    FROM recipes 
+    FROM recipes
     WHERE RecipeId = ${x}`;
 
     if (x) {
@@ -232,12 +234,12 @@ async function recommendation(req, res) {
 
     var complexQuery = `WITH review_authors AS (
     select AuthorId
-    FROM reviews 
+    FROM reviews
     where RecipeId = ${x}
     ),
     other_recipes AS (
-        select RecipeId 
-        FROM reviews 
+        select RecipeId
+        FROM reviews
         WHERE AuthorId in (select * from review_authors)
     ),
     recipe_category AS (
@@ -249,10 +251,10 @@ async function recommendation(req, res) {
         SELECT RecipeIngredientParts
         FROM recipes
         WHERE RecipeID = ${x})
-    select * 
-    from recipes 
+    select *
+    from recipes
     where ((RecipeId in (select * from other_recipes) and RecipeId <> ${x})) or (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
-    order by ReviewCount desc 
+    order by ReviewCount desc
     limit 8;`;
 
     if (x) {
