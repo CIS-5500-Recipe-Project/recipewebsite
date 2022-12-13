@@ -1968,7 +1968,9 @@ select.uk-form-width-xsmall {
 .uk-card-badge:first-child + * {
   margin-top: 0;
 } /* Hover modifier ========================================================================== */
-.uk-card-hover:not(.uk-card-default):not(.uk-card-primary):not(.uk-card-secondary):hover {
+.uk-card-hover:not(.uk-card-default):not(.uk-card-primary):not(
+    .uk-card-secondary
+  ):hover {
   background: #fff;
   box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
 } /* Style modifiers ========================================================================== */ /* * Default * Note: Header and Footer are only implemented for the default style */
@@ -9013,4 +9015,17 @@ iframe.uk-cover {
   h3 {
     page-break-after: avoid;
   }
+}
+
+.css-et1ao3-MuiTypography-root {
+  font-size: 1rem !important;
+}
+
+.comment-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-box-star {
+  margin: 20px 10px 30px 10px;
 }
