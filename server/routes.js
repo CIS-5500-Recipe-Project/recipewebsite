@@ -2,7 +2,7 @@ const config = require("./config.json");
 const mysql = require("mysql");
 const e = require("express");
 
-// // TODO: fill in your connection details here
+//connection details
 const connection = mysql.createConnection({
   host: config.rds_host,
   user: config.rds_user,
@@ -12,13 +12,8 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
-// ********************************************
-//            Example Route
-// ********************************************
 
-// Route 1 All Recipes - Query to grab info of all recipes
-// query:
-
+//Route 1: Recipes Page - get recipes by selected category
 async function recipes(req, res) {
   var choice = req.params.choice;
 
@@ -80,8 +75,6 @@ async function recipes(req, res) {
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
-  // http://localhost:8080/recipes/Healthy
-
   if (choice === "Breakfast & Brunch") {
     connection.query(breakfast_brunch_query, function (err, results, fields) {
       if (err) console.log(err);
@@ -129,28 +122,13 @@ async function recipes(req, res) {
   }
 }
 
-// async function search_images(req, res) {
-//     //TODO: match to images of specific recipe id
-//     const recipeId = req.params.RecipeId ? req.params.RecipeId : -1
-//     connection.query(`SELECT Images
-//         FROM recipes
-//         WHERE RecipeId = '${recipeId}'`, function (error, results, fields) {
-//         if (error) {
-//             console.log(error)
-//             res.json({ error: error })
-//         } else if (results) {
-//             res.json({ results: results })
-//         }
-//     })
-// }
-
-// Route 2
-// TODO:
+//page Two
 async function pageTwo(req, res) {
   // a GET request to /recipes
   res.send(`this is page 2`);
 }
 
+//Route 2: Recipe Page - get all info of a recipe by RecipeId
 async function recipe(req, res) {
   var x = parseInt(req.params.recipeId);
   console.log(typeof x);
@@ -159,7 +137,6 @@ async function recipe(req, res) {
     WHERE RecipeId = ${x}`;
 
   if (x) {
-    // http://localhost:8080/recipe/38
     connection.query(queryRecipeWithId, function (err, results, fields) {
       console.log(typeof req.params.recipeId);
       if (err) console.log(err);
@@ -171,6 +148,7 @@ async function recipe(req, res) {
   }
 }
 
+//Route 3: Recipe Page - get all comments per RecipeId
 async function reviews(req, res) {
   var x = parseInt(req.params.recipeId);
   // console.log(typeof x);
@@ -191,7 +169,7 @@ async function reviews(req, res) {
   }
 }
 
-// Route 3 - Search
+//Route 4: Search Page - search by keywords, and order by selected sort method
 async function search(req, res) {
   const pagesize = req.query.pagesize ? req.query.pagesize : 10;
   const page = req.query.page ? req.query.page : 1;
@@ -226,7 +204,7 @@ async function search(req, res) {
   });
 }
 
-//Route 4 - Search Count
+//Route 5: Search Page - get search results count
 async function searchCount(req, res) {
   //   console.log(req.query);
   const keyword = req.params.keyword ? req.params.keyword : "";
@@ -245,10 +223,9 @@ async function searchCount(req, res) {
   });
 }
 
-// route 5 - complex query: suggest a recipe
+//Route 6: Recipe Page - recipe suggestion
 // for example, people who liked recipeId 54 also liked some other recipes
-// suggest the top 5 recipes
-
+// suggest the top 8 recipes
 async function recommendation(req, res) {
   var x = parseInt(req.params.recipeId);
 
@@ -285,6 +262,7 @@ async function recommendation(req, res) {
   }
 }
 
+//Route 8: Home Page - suggests recipes per current month
 async function homePage_RecentlyPopular(req, res) {
   //return the recipes posted on the same month
   const date = new Date();
@@ -311,6 +289,7 @@ async function homePage_RecentlyPopular(req, res) {
   });
 }
 
+//Route 9: Home Page - suggests recipes per users current time
 async function homePage_TodaySelected(req, res) {
   //return the recipes based on the current time
   const date = new Date();
@@ -362,8 +341,6 @@ const getFormattedDate = (date) => {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0'+minutes : minutes;
     seconds = seconds < 10 ? '0'+seconds : seconds;
-
-  
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
@@ -379,7 +356,6 @@ async function postComment(req, res) {
   INSERT INTO reviews (AuthorId, RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
   VALUES (1234567, ${recipeId}, '${name}', ${rating}, '${comment}', DATE('${date}'), DATE('${date}'));
   `
-
   // console.log(Query)
   connection.query(Query, function (err, results, fields) {
     if (err) console.log(err);
@@ -389,9 +365,8 @@ async function postComment(req, res) {
       res.json(results);
     }
   });
-
-
 }
+
 module.exports = {
   recipe,
   recipes,
