@@ -82,6 +82,4 @@ const postComment = async (data) => {
 }
 
 export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment };
-
-export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected };
 export { getDefaultRecipes, getSimilarRecipes, getRecipes };
