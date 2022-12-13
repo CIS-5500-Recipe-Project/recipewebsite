@@ -2,7 +2,7 @@ const config = require("./config.json");
 const mysql = require("mysql");
 const e = require("express");
 
-// // TODO: fill in your connection details here
+//connection details
 const connection = mysql.createConnection({
     host: config.rds_host,
     user: config.rds_user,
@@ -12,13 +12,8 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
-// ********************************************
-//            Example Route
-// ********************************************
 
-// Route 1 All Recipes - Query to grab info of all recipes
-// query:
-
+//Route 1: Recipes Page - get recipes by selected category
 async function recipes(req, res) {
     var choice = req.params.choice;
 
@@ -26,8 +21,8 @@ async function recipes(req, res) {
     var query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%' or recipes.Name LIKE '%${choice}%'
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%' or Name LIKE '%${choice}%'
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
@@ -61,33 +56,33 @@ async function recipes(req, res) {
 
     //query keto diets
     var keto_query = `WITH DietTable AS (
-   SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
-   FROM recipes
-   )
-  SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
-  LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
-  WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1)
-  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
-  LIMIT 30;`;
+    SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
+    FROM recipes
+    )
+   SELECT recipes.RecipeId, recipes.Name,  recipes.AuthorName, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+   FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
+   LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
+   WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1) or recipes.Name like '%keto%'
+   GROUP BY recipes.RecipeId
+   ORDER BY AvgRating DESC, Comment Desc, Date DESC
+   LIMIT 30;`;
 
     //query quick and easy meal to make
     var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE recipes.NumOfSteps <=5 
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
-    // var queryAll = `SELECT *
-    // FROM recipes LIMIT 50`;
+    // http://localhost:8080/recipes/Healthy
 
     if (choice === "Breakfast & Brunch") {
         connection.query(breakfast_brunch_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                console.log(results);
+                // console.log(results);
                 res.json(results);
             }
         });
@@ -95,7 +90,7 @@ async function recipes(req, res) {
         connection.query(appetizer_snack_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                console.log(results);
+                // console.log(results);
                 res.json(results);
             }
         });
@@ -110,7 +105,6 @@ async function recipes(req, res) {
         connection.query(keto_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                console.log("keto result:" + results);
                 res.json(results);
             }
         });
@@ -131,12 +125,13 @@ async function recipes(req, res) {
     }
 }
 
-// Route 2
+//page Two
 async function pageTwo(req, res) {
     // a GET request to /recipes
     res.send(`this is page 2`);
 }
 
+//Route 2: Recipe Page - get all info of a recipe by RecipeId
 async function recipe(req, res) {
     var x = parseInt(req.params.recipeId);
     console.log(typeof x);
@@ -155,14 +150,26 @@ async function recipe(req, res) {
             }
         });
     }
+    if (x) {
+        connection.query(queryRecipeWithId, function (err, results, fields) {
+            console.log(typeof req.params.recipeId);
+            if (err) console.log(err);
+            else {
+                // console.log(results);
+                res.json(results);
+            }
+        });
+    }
 }
 
+//Route 3: Recipe Page - get all comments per RecipeId
 async function reviews(req, res) {
     var x = parseInt(req.params.recipeId);
     // console.log(typeof x);
     var query = `SELECT *
     FROM reviews
-    WHERE RecipeId = ${x}`;
+    WHERE RecipeId = ${x}
+    ORDER BY DateSubmitted DESC`;
 
     if (x) {
         connection.query(query, function (err, results, fields) {
@@ -176,14 +183,12 @@ async function reviews(req, res) {
     }
 }
 
-// Route 3 - Search
+//Route 4: Search Page - search by keywords, and order by selected sort method
 async function search(req, res) {
     const pagesize = req.query.pagesize ? req.query.pagesize : 10;
     const page = req.query.page ? req.query.page : 1;
     const sort = req.query.sort ? req.query.sort : 1;
-    const tagQuery = req.query.tag
-        ? `AND recipes.Keywords LIKE '%${req.query.tag}%'`
-        : "";
+
     // 1=date
     // 2=rating
     // 3=comment
@@ -195,20 +200,13 @@ async function search(req, res) {
         defaultSort = "Comment DESC";
     }
 
-    // console.log(tagQuery)
-    // console.log(defaultSort)
+
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
-    recipes.Images,
-    AVG(reviews.Rating) as AvgRating,
-    COUNT(reviews.RecipeId) as Comment,
-    recipes.DatePublished as Date
+    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    AND DATE(recipes.DatePublished) > '2010-01-01'
-    WHERE recipes.Name LIKE '%${keyword}%'
-    ${tagQuery}
-    GROUP BY recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished
+    WHERE recipes.Name LIKE '%${keyword}%' or recipes.Keywords LIKE '%${keyword}%' or recipes.Description LIKE '%${keyword}%'
+    GROUP BY recipes.RecipeId
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
@@ -222,14 +220,14 @@ async function search(req, res) {
     });
 }
 
-//Route 4 - Search Count
+//Route 5: Search Page - get search results count
 async function searchCount(req, res) {
     //   console.log(req.query);
     const keyword = req.params.keyword ? req.params.keyword : "";
 
     var query = `SELECT COUNT(*) as Total
     from recipes
-    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'`;
+    WHERE recipes.Name LIKE '%${keyword}%' or recipes.Keywords LIKE '%${keyword}%' or recipes.Description LIKE '%${keyword}%'`;
 
     // http://localhost:8080/searchcount/egg
     connection.query(query, function (err, results, fields) {
@@ -241,10 +239,9 @@ async function searchCount(req, res) {
     });
 }
 
-// route 5 - complex query: suggest a recipe
+//Route 6: Recipe Page - recipe suggestion
 // for example, people who liked recipeId 54 also liked some other recipes
-// suggest the top 5 recipes
-
+// suggest the top 8 recipes
 async function recommendation(req, res) {
     var x = parseInt(req.params.recipeId);
 
@@ -285,6 +282,7 @@ async function recommendation(req, res) {
     }
 }
 
+//Route 8: Home Page - suggests recipes per current month
 async function homePage_RecentlyPopular(req, res) {
     //return the recipes posted on the same month
     const date = new Date();
@@ -311,6 +309,7 @@ async function homePage_RecentlyPopular(req, res) {
     });
 }
 
+//Route 9: Home Page - suggests recipes per users current time
 async function homePage_TodaySelected(req, res) {
     //return the recipes based on the current time
     const date = new Date();
@@ -370,6 +369,8 @@ const getFormattedDate = (date) => {
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
 
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
@@ -397,7 +398,17 @@ async function postComment(req, res) {
     });
 
 
+    // console.log(Query)
+    connection.query(Query, function (err, results, fields) {
+        if (err) console.log(err);
+        else {
+            // console.log(str);
+            // console.log(results);
+            res.json(results);
+        }
+    });
 }
+
 module.exports = {
     recipe,
     recipes,
