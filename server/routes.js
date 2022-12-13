@@ -176,7 +176,8 @@ async function reviews(req, res) {
   // console.log(typeof x);
   var query = `SELECT *
     FROM reviews
-    WHERE RecipeId = ${x}`;
+    WHERE RecipeId = ${x}
+    ORDER BY DateSubmitted DESC`;
 
   if (x) {
     connection.query(query, function (err, results, fields) {
