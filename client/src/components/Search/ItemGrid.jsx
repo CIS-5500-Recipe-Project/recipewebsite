@@ -1,6 +1,7 @@
 import "../css/main.css";
 import "../css/css.css";
 import "../css/css1.css";
+import "../css/itemGrid.css";
 import "uikit/dist/js/uikit.js";
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 
