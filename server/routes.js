@@ -26,8 +26,8 @@ async function recipes(req, res) {
   var query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%'
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%' or Name LIKE '%${choice}%'
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
@@ -36,7 +36,7 @@ async function recipes(req, res) {
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE Keywords LIKE '%Breakfast%’ or Keywords LIKE ‘%Brunch%’
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
@@ -45,7 +45,7 @@ async function recipes(req, res) {
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE Keywords LIKE '%Appetizer%' or Keywords LIKE ‘%snack%’
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
@@ -54,29 +54,29 @@ async function recipes(req, res) {
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE Keywords LIKE '%grill%' or Keywords LIKE ‘%bbq%’
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
-  HAVING AVG(reviews.Rating) > 4.5
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
   //query keto diets
   var keto_query = `WITH DietTable AS (
-   SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
-   FROM recipes
-   )
-  SELECT recipes.RecipeId, recipes.Name, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
-  LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
-  WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1)
-  ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
-  LIMIT 30;`;
+    SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
+    FROM recipes
+    )
+   SELECT recipes.RecipeId, recipes.Name, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+   FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
+   LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
+   WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1) or recipes.Name like '%keto%'
+   GROUP BY recipes.RecipeId
+   ORDER BY AvgRating DESC, Comment Desc, Date DESC
+   LIMIT 30;`;
 
   //query quick and easy meal to make
   var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
   WHERE recipes.NumOfSteps <=5 
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
