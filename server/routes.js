@@ -195,34 +195,23 @@ async function search(req, res) {
   const pagesize = req.query.pagesize ? req.query.pagesize : 10;
   const page = req.query.page ? req.query.page : 1;
   const sort = req.query.sort ? req.query.sort : 1;
-  const tagQuery = req.query.tag
-    ? `AND recipes.Keywords LIKE '%${req.query.tag}%'`
-    : "";
   // 1=date
   // 2=rating
   // 3=comment
   //   console.log(req.query);
   var defaultSort = "recipes.DatePublished DESC";
   if (sort == 2) {
-    defaultSort = "AvgRating DESC";
+    defaultSort = "AvgRating DESC, Comment DESC";
   } else if (sort == 3) {
-    defaultSort = "Comment DESC";
+    defaultSort = "Comment DESC, AvgRating DESC";
   }
 
-    // console.log(tagQuery)
-    // console.log(defaultSort)
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
-    recipes.Images,
-    AVG(reviews.Rating) as AvgRating,
-    COUNT(reviews.RecipeId) as Comment,
-    recipes.DatePublished as Date
+    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
-    AND DATE(recipes.DatePublished) > '2010-01-01'
-    WHERE recipes.Name LIKE '%${keyword}%'
-    ${tagQuery}
-    GROUP BY recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished
+    WHERE recipes.Name LIKE '%${keyword}%' or recipes.Keywords LIKE '%${keyword}%' or recipes.Description LIKE '%${keyword}%'
+    GROUP BY recipes.RecipeId
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
@@ -243,7 +232,7 @@ async function searchCount(req, res) {
 
   var query = `SELECT COUNT(DISTINCT recipes.RecipeId) AS Total
     from recipes
-    WHERE (recipes.Name LIKE '%${keyword}%' or recipes.keywords LIKE '%${keyword}%') AND DATE(recipes.DatePublished) > '2010-01-01'`;
+    WHERE recipes.Name LIKE '%${keyword}%' or recipes.Keywords LIKE '%${keyword}%' or recipes.Description LIKE '%${keyword}%'`;
 
   // http://localhost:8080/searchcount/egg
   connection.query(query, function (err, results, fields) {
