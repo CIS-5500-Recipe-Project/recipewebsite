@@ -1,7 +1,7 @@
 import { config } from '../config'
 
 const getRecipes = async (choice) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes${choice}`, {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/recipes/${choice}`, {
         method: 'GET',
     })
     return res.json()
@@ -28,6 +28,6 @@ const getSimilarRecipes = async (recipeId) => {
     return res.json();
 }
 
-export { getDefaultRecipes, getRecipeById, getSimilarRecipes };
+export { getDefaultRecipes, getRecipeById, getSimilarRecipes, getRecipes};
 
 // http://127.0.0.1:8080/recommendation/410347
