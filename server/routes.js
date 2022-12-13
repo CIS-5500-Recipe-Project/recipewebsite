@@ -12,6 +12,25 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
+async function getUserByEmial(req,res){
+  const email = req.body.email;
+  var query = `
+  SELECT AuthoeName
+  FROM users
+  WHERE email = '${email}';`;
+
+  connection.query(query, function (err, results) {
+    if (err){
+      res.send({err:err});
+    }
+    else {
+      res.json(results);   
+    }
+  });
+
+
+}
+
 async function login(req, res){ 
   const email = req.body.email;
   const password = req.body.password;
@@ -52,15 +71,16 @@ async function register(req, res) {
     if(err) console.log(err);
     else{
       //user already exist
-      if(result.length>0){
-        res.send({message:"user already exists, please go to the login page"});
+      if(result.length > 0){
+        res.json("error");
       } else {
         connection.query(query, function (err, results) {
           if (err) console.log(err);
           else {
-            res.json(results);
+            console.log("success");
           }
         });
+        res.json("success");
       }
     }
   })
@@ -433,5 +453,6 @@ module.exports = {
   homePage_TodaySelected,
   postComment,
   register,
-  login
+  login,
+  getUserByEmial
 };

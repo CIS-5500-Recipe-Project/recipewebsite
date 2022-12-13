@@ -86,4 +86,14 @@ const login = async(email, password) =>{
   return res.json()
 }
 
-export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment, register, login};
+const getUserByEmial = async(email) =>{
+  var res = await fetch(`http://${config.server_host}:${config.server_port}/getUserByEmail`,{
+    method: 'GET',
+    body: JSON.stringify({
+      email:email,
+    })
+  })
+  return res.json()
+}
+
+export { getFoodSearch, getFoodSearchCount, getRecipeById, getReviewsById, homePage_RecentlyPopular, homePage_TodaySelected, postComment, register, login, getUserByEmial};

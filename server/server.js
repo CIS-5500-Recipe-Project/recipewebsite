@@ -45,6 +45,8 @@ app.post("/register",routes.register);
 //login
 app.get("/login",routes.login);
 
+app.get("/user", routes.getUserByEmial);
+
 app.listen(config.server_port, () => {
     console.log(
         `Server running at http://${config.server_host}:${config.server_port}/`

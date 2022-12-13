@@ -3,6 +3,8 @@ import Recipe from "./pages/Recipe";
 import Recipes from "./pages/Recipes";
 import Search from "./pages/Search";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   //test
@@ -14,6 +16,8 @@ function App() {
         <Route path="/search/:keywords" element={<Search/>} />
         <Route path="/recipes" element={<Recipes />} />
         <Route path="/Recipe/:recipeId" element={<Recipe />} />
+        <Route path="/Login" element={<Login/>} />
+        <Route path="/Signup" element={<Signup/>} />
       </Routes>
     </Router>
   );
