@@ -209,10 +209,10 @@ async function search(req, res) {
     defaultSort = "Comment DESC";
   }
 
-  // console.log(tagQuery)
-  // console.log(defaultSort)
-  const keyword = req.params.keyword ? req.params.keyword : "";
-  const query = `SELECT reviews.RecipeId, recipes.Name, recipes.DatePublished,
+    // console.log(tagQuery)
+    // console.log(defaultSort)
+    const keyword = req.params.keyword ? req.params.keyword : "";
+    const query = `SELECT reviews.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
     COUNT(reviews.RecipeId) as Comment,
@@ -222,7 +222,7 @@ async function search(req, res) {
     AND DATE(recipes.DatePublished) > '2010-01-01'
     WHERE recipes.Name LIKE '%${keyword}%'
     ${tagQuery}
-    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+    GROUP BY reviews.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished
     ORDER BY ${defaultSort}
     LIMIT ${pagesize} OFFSET ${(page - 1) * pagesize};`;
 
