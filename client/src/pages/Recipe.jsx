@@ -2,12 +2,10 @@ import Topbar from "../components/Topbar";
 import RecipeMain from "../components/Recipe/RecipeMain.js";
 import RecipeContent from "../components/Recipe/RecipeContent.js";
 import SimilarRecipe from "../components/Recipe/SimilarRecipe";
-import React, { useState, useEffect, useLocation } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getRecipeById, getReviewsById, postComment } from "../fetcher.js";
+import { getRecipeById, getReviewsById, postComment, getSimilarRecipes} from "../fetcher.js";
 import Loading from "../components/Progress";
-import { getSimilarRecipes } from "../components/fetcher";
-import dummy from "../components/dummy.json";
 
 
 export default function Recipe() {
