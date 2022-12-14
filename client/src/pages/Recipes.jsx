@@ -3,6 +3,7 @@ import React, { useState, useEffect} from "react";
 import { getRecipes } from "../fetcher";
 import { Link } from "react-router-dom";
 import ItemGrid from "../components/Search/ItemGrid";
+import Loading from "../components/Progress";
 
 export default function Recipes() {
 
@@ -19,6 +20,7 @@ export default function Recipes() {
   const [choice, setChoice] = useState("Breakfast");
   const [selection, setSelection] = useState("Breakfast");
   const [recipes, setRecipes] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   //handleClick -> onClick -> setChoice
   const handleClick = (type) => {
@@ -35,7 +37,8 @@ export default function Recipes() {
     if(choice)
     getRecipes(choice).then((selectedRecipes) => {
         console.log(selectedRecipes)
-        setRecipes(selectedRecipes);
+      setRecipes(selectedRecipes);
+      setLoaded(true);
       })
   }, [choice]);
 
@@ -111,7 +114,10 @@ export default function Recipes() {
               class="uk-child-width-1-2 uk-child-width-1-3@s"
               data-uk-grid=""
             >
-                {(recipes.length !== 0)? (recipes.map((ele, index)=>{
+                {(!loaded) ? (<Loading />) :
+                  (recipes.length === 0) ?
+                    (<b>No Recipe Found</b>) :
+                  (recipes.map((ele, index) => {
                   return (
                     <Link to={`/recipe/${ele.RecipeId}`}>
                       <ItemGrid
@@ -129,7 +135,7 @@ export default function Recipes() {
                   />
                     </Link>
                   );
-                })):(<b>No Recipe Found</b>)}
+                }))}
 
             {/*pagination needed below code, otherwise delete */}
             {/* <div class="uk-margin-large-top uk-text-small">
