@@ -77,10 +77,10 @@ async function register(req, res) {
         connection.query(query, function (err, results) {
           if (err) console.log(err);
           else {
-            console.log("success");
+            res.json(results);
+            console.log(results.insertId);
           }
         });
-        res.json("success");
       }
     }
   })
