@@ -9,7 +9,7 @@ export default function Recipes() {
   const recipesType = ["Breakfast & Brunch", "Lunch", "Appetizers & Snack", "Dinner", "Dessert", "Drink & Cocktail",
                     "Side Dish", "Grilling & BBQ", "Microwave", "Quick & Easy", "Slow-Cooker", "Air Fryer", "Instant Pot",
                     "Baking"];
-  const healthyAndDietType = ["Keto", "Healthy", "Vegetarian", "Vegan", "Mediterranean Diet", "Weight Watchers",
+  const healthyAndDietType = ["Keto", "Healthy", "Vegetarian", "Vegan", "Mediterranean", "Weight Watchers",
                               "Low-Carb", "Gluten-Free"];
   const worldCusineType = ["Mexican", "Italian", "Indian", "Thai", "Korean", "French", "Chinese", "Japanese", "Spanish","Brazilian"]; 
   const seasonalType = ["Spring", "Summer", "Fall", "Winter"];
@@ -53,50 +53,50 @@ export default function Recipes() {
                 data-uk-nav=""
               >
                 <li class="uk-parent">
-                  <a href="#">Recipes</a>
+                  <a href="javascript:void(0);">Recipes</a>
                   <ul class="uk-nav-sub">
                     {recipesType.map(function(type,index){
-                      return <li key={index} onClick={()=>handleClick(type)}><a href ="#">{type} Recipes</a></li>
+                      return <li key={index} onClick={()=>handleClick(type)}><a href ="javascript:void(0);">{type} Recipes</a></li>
                     })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Healthy and Diet</a>
+                  <a href="javascript:void(0);">Healthy and Diet</a>
                   <ul class="uk-nav-sub">
                     {healthyAndDietType.map(function(healthyAndDietType,index){
-                        return <li key = {index} onClick={()=>handleClick(healthyAndDietType)}><a href ="#">{healthyAndDietType} Recipes</a></li>
+                        return <li key = {index} onClick={()=>handleClick(healthyAndDietType)}><a href ="javascript:void(0);">{healthyAndDietType} Recipes</a></li>
                       })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Holidays</a>
+                  <a href="javascript:void(0);">Holidays</a>
                   <ul class="uk-nav-sub">
                     {holidayType.map(function(holidayType,index){
-                          return <li key = {index} onClick={()=>handleClick(holidayType)}><a href ="#">{holidayType} Recipes</a></li>
+                          return <li key = {index} onClick={()=>handleClick(holidayType)}><a href ="javascript:void(0);">{holidayType} Recipes</a></li>
                         })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">World Cuisine</a>
+                  <a href="javascript:void(0);">World Cuisine</a>
                   <ul class="uk-nav-sub">
                     {worldCusineType.map(function(worldCusineType,index){
-                          return <li key = {index} onClick={()=>handleClick(worldCusineType)}><a href ="#">{worldCusineType} Recipes</a></li>
+                          return <li key = {index} onClick={()=>handleClick(worldCusineType)}><a href ="javascript:void(0);">{worldCusineType} Recipes</a></li>
                         })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Seasonal</a>
+                  <a href="javascript:void(0);">Seasonal</a>
                   <ul class="uk-nav-sub">
                     {seasonalType.map(function(seasonalType,index){
-                            return <li key = {index} onClick={()=>handleClick(seasonalType)}><a href ="#">{seasonalType} Recipes</a></li>
+                            return <li key = {index} onClick={()=>handleClick(seasonalType)}><a href ="javascript:void(0);">{seasonalType} Recipes</a></li>
                           })}
                   </ul>
                 </li>
                 <li class="uk-parent">
-                  <a href="#">Special Occasions</a>
+                  <a href="javascript:void(0);">Special Occasions</a>
                   <ul class="uk-nav-sub">
                     {specialOccasionsType.map(function(specialOccasionsType,index){
-                            return <li key = {index} onClick={()=>handleClick(specialOccasionsType)}><a href ="#">{specialOccasionsType} Recipes</a></li>
+                            return <li key = {index} onClick={()=>handleClick(specialOccasionsType)}><a href ="javascript:void(0);">{specialOccasionsType} Recipes</a></li>
                           })}
                   </ul>
                 </li>
