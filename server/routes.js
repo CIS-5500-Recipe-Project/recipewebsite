@@ -365,21 +365,24 @@ async function postComment(req, res) {
     const comment = req.body.comment
     // INSERT INTO reviews (RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
 
-    var Query = `
-  INSERT INTO reviews (AuthorId, RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
-  VALUES (1234567, ${recipeId}, '${name}', ${rating}, '${comment}', DATE('${date}'), DATE('${date}'));
-  `
-
+    var register_query = `INSERT INTO users (AuthorId, AuthorName, email, password)
+    VALUES(null, '${name}', 'test', 'test');`;
+    
     // console.log(Query)
-    connection.query(Query, function (err, results, fields) {
+    connection.query(register_query, function (err, results) {
         if (err) console.log(err);
         else {
-            // console.log(str);
-            // console.log(results);
-            res.json(results);
+            const id = parseInt(results.insertId);
+            var Query = `INSERT INTO reviews (ReviewId, AuthorId, RecipeId, AuthorName, Rating, Review, DateSubmitted)
+            VALUES (null, ${id}, ${recipeId}, '${name}', ${rating}, '${comment}', DATE('${date}'));`
+            connection.query(Query,function(err, results){
+                if(err) console.log(err);
+                else{
+                    res.json(results);
+                }
+            })
         }
     });
-
 
 }
 
