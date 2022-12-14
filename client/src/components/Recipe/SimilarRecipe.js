@@ -32,19 +32,19 @@ export default function SmilarRecipe({ recipes }) {
                       <Link to={`/recipe/${ele.RecipeId}`}>
 
                         <ItemGrid
-                      key={index}
-                      // onClick={()=>handleClick(index)}
-                      name={ele.Name}
-                      image={ele.Images}
-                      rating={
-                        ele.AvgRating == null
-                          ? 0
-                          : Number(ele.AvgRating).toFixed(1)
-                      }
-                      comment={ele.Comment}
-                      date={ele.Date}
-                      author={ele.AuthorName}
-                    />
+                          key={index}
+                          // onClick={()=>handleClick(index)}
+                          name={ele.Name}
+                          image={ele.Images}
+                          rating={
+                            ele.AvgRating == null
+                              ? 0
+                              : Number(ele.AvgRating).toFixed(1)
+                          }
+                          comment={ele.Comment}
+                          date={ele.Date}
+                          author={ele.AuthorName}
+                        />
                       </Link>
                     )
                   })) : (<GreyTextTypography variant="h7">

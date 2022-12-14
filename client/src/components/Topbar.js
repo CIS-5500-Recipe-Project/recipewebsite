@@ -19,7 +19,7 @@ export default function Topbar() {
           <div className="uk-position-z-index" data-uk-navbar>
             <div className="uk-navbar-left">
               <Link to="/">
-                <a className="uk-navbar-item uk-logo">Recipe</a>
+                <a className="uk-navbar-item uk-logo">Bon Appetit</a>
               </Link>
               <ul className="uk-navbar-nav uk-visible@m uk-margin-large-left">
                 <li className={(url === "/" ? "uk-active" : "")}>
