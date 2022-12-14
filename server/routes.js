@@ -18,38 +18,42 @@ async function recipes(req, res) {
     var choice = req.params.choice;
 
     //General for all others
-    var query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  from recipes
-  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    var query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on u.AuthorId = recipes.AuthorId
   WHERE Keywords LIKE '%${choice}%' or Description LIKE '%${choice}%' or recipes.Name LIKE '%${choice}%'
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
     //Breakfast & Brunch
-    var breakfast_brunch_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  from recipes
-  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    var breakfast_brunch_query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on u.AuthorId = recipes.AuthorId
   WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%Brunch%'
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
 
     //Appetizers & Snack
-    var appetizer_snack_query = `SELECT recipes.RecipeId, recipes.Name,recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var appetizer_snack_query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on u.AuthorId = recipes.AuthorId
     WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%snack%'
-    GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+    GROUP BY reviews.RecipeId
     ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
     LIMIT 30;`;
 
     //Grilling & BBQ
-    var grilling_bbq_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
-  from recipes
-  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    var grilling_bbq_query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on u.AuthorId = recipes.AuthorId
   WHERE Keywords LIKE '%${choice}%' or Keywords LIKE '%bbq%'
-  GROUP BY reviews.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY reviews.RecipeId
   HAVING AVG(reviews.Rating) > 4.5
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
   LIMIT 30;`;
@@ -59,7 +63,7 @@ async function recipes(req, res) {
         SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
         FROM recipes
         )
-       SELECT recipes.RecipeId, recipes.Name, recipes.ReviewCount, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+       SELECT recipes.RecipeId, recipes.Name, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
        FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
        LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
        WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1) or recipes.Name like '%keto%'
@@ -68,9 +72,10 @@ async function recipes(req, res) {
        LIMIT 30;`;
 
     //query quick and easy meal to make
-    var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+    var quick_and_easy_query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
   from recipes
   LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+  JOIN users u on u.AuthorId = recipes.AuthorId
   WHERE recipes.NumOfSteps <=5
   GROUP BY reviews.RecipeId
   ORDER BY AvgRating DESC, Comment Desc, recipes.DatePublished DESC
@@ -135,9 +140,12 @@ async function pageTwo(req, res) {
 async function recipe(req, res) {
     var x = parseInt(req.params.recipeId);
     console.log(typeof x);
-    var queryRecipeWithId = `SELECT *
+    var queryRecipeWithId = `SELECT *, u.AuthorName, AVG(reviews.Rating) as AggregatedRating,COUNT(reviews.RecipeId) as Comment
     FROM recipes
-    WHERE RecipeId = ${x}`;
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    Join users u on recipes.AuthorId = u.AuthorId
+    WHERE recipes.RecipeId = ${x}
+    GROUP BY recipes.RecipeId`;
 
     if (x) {
         connection.query(queryRecipeWithId, function (err, results, fields) {
@@ -155,8 +163,9 @@ async function recipe(req, res) {
 async function reviews(req, res) {
     var x = parseInt(req.params.recipeId);
     // console.log(typeof x);
-    var query = `SELECT *
+    var query = `SELECT reviews.ReviewId, reviews.RecipeId, reviews.AuthorId, users.AuthorName, Rating, Review, DateSubmitted
     FROM reviews
+    JOIN users on reviews.AuthorId = users.AuthorId
     WHERE RecipeId = ${x}
     ORDER BY DateSubmitted DESC`;
 
@@ -189,9 +198,10 @@ async function search(req, res) {
     }
 
     const keyword = req.params.keyword ? req.params.keyword : "";
-    const query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
+    const query = `SELECT distinct recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on u.AuthorId = recipes.AuthorId
     WHERE recipes.Name LIKE '%${keyword}%' or recipes.Keywords LIKE '%${keyword}%' or recipes.Description LIKE '%${keyword}%'
     GROUP BY recipes.RecipeId
     ORDER BY ${defaultSort}
@@ -233,29 +243,32 @@ async function recommendation(req, res) {
     var x = parseInt(req.params.recipeId);
 
     var complexQuery = `WITH review_authors AS (
-    select AuthorId
-    FROM reviews
-    where RecipeId = ${x}
-    ),
-    other_recipes AS (
-        select RecipeId
+        select AuthorId
         FROM reviews
-        WHERE AuthorId in (select * from review_authors)
-    ),
-    recipe_category AS (
-        SELECT RecipeCategory AS category
-        FROM recipes
-        where RecipeID = ${x}
-    ),
-    recipe_ingredient AS (
-        SELECT RecipeIngredientParts
-        FROM recipes
-        WHERE RecipeID = ${x})
-    select *
-    from recipes
-    where ((RecipeId in (select * from other_recipes) and RecipeId <> ${x})) or (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
-    order by ReviewCount desc
-    limit 8;`;
+        where RecipeId = ${x}
+        ),
+        other_recipes AS (
+            select RecipeId
+            FROM reviews
+            WHERE AuthorId in (select * from review_authors)
+        ),
+        recipe_category AS (
+            SELECT RecipeCategory AS category
+            FROM recipes
+            where RecipeID = ${x}
+        ),
+        recipe_ingredient AS (
+            SELECT RecipeIngredientParts
+            FROM recipes
+            WHERE RecipeID = ${x})
+        SELECT distinct recipes.RecipeId, recipes.Name, u.AuthorName,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
+        from recipes
+        LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+        JOIN users u on recipes.AuthorId = u.AuthorId
+        where ((recipes.RecipeId in (select * from other_recipes) and recipes.RecipeId <> ${x})) or (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
+        GROUP BY reviews.RecipeId
+        order by Comment desc
+        limit 8;`;
 
     if (x) {
         // http://localhost:8080/recommendation/54
@@ -275,15 +288,16 @@ async function homePage_RecentlyPopular(req, res) {
     const date = new Date();
     const currentMonth = date.getMonth() + 1;
 
-    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
-  recipes.Images,
-  AVG(reviews.Rating) as AvgRating,
-  COUNT(reviews.RecipeId) as Comment,
-  recipes.DatePublished as Date
-  from recipes
-  LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    var Query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished,
+    recipes.Images,
+    AVG(reviews.Rating) as AvgRating,
+    COUNT(reviews.RecipeId) as Comment,
+    recipes.DatePublished as Date
+    from recipes
+    LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on recipes.AuthorId = u.AuthorId
   WHERE MONTH(recipes.DatePublished) = ${currentMonth} AND DATE(recipes.DatePublished) > '2010-01-01'
-  GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+  GROUP BY recipes.RecipeId
   ORDER BY AvgRating DESC, Comment DESC
   LIMIT 12;`;
 
@@ -317,17 +331,19 @@ async function homePage_TodaySelected(req, res) {
         keywords = "night";
     }
 
-    var Query = `SELECT recipes.RecipeId, recipes.Name, recipes.AuthorName, recipes.DatePublished,
+    var Query = `SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.DatePublished,
     recipes.Images,
     AVG(reviews.Rating) as AvgRating,
     COUNT(reviews.RecipeId) as Comment,
     recipes.DatePublished as Date
     from recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+    JOIN users u on recipes.AuthorId = u.AuthorId
     WHERE (recipes.RecipeCategory like '%${keywords}%'
-       or recipes.Keywords like '%${keywords}%')
+       or recipes.Keywords like '%${keywords}%'
+       or recipes.Description like '%${keywords}')
        AND DATE(recipes.DatePublished) > '2010-01-01'
-    GROUP BY recipes.RecipeId, recipes.Name, recipes.DatePublished
+    GROUP BY recipes.RecipeId
     ORDER BY AvgRating DESC, Comment DESC
     limit 12;`;
 
@@ -373,8 +389,8 @@ async function postComment(req, res) {
         if (err) console.log(err);
         else {
             const id = parseInt(results.insertId);
-            var Query = `INSERT INTO reviews (ReviewId, AuthorId, RecipeId, AuthorName, Rating, Review, DateSubmitted)
-            VALUES (null, ${id}, ${recipeId}, '${name}', ${rating}, '${comment}', DATE('${date}'));`
+            var Query = `INSERT INTO reviews (ReviewId, AuthorId, RecipeId, Rating, Review, DateSubmitted)
+            VALUES (null, ${id}, ${recipeId}, ${rating}, '${comment}', DATE('${date}'));`
             connection.query(Query,function(err, results){
                 if(err) console.log(err);
                 else{

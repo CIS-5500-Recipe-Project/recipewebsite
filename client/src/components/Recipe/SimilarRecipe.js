@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Typography } from "@mui/material";
 import { withStyles } from "@material-ui/core/styles";
+import ItemGrid from "../Search/ItemGrid";
 
 export default function SmilarRecipe({ recipes }) {
   const GreyTextTypography = withStyles({
@@ -26,42 +27,24 @@ export default function SmilarRecipe({ recipes }) {
                 data-uk-grid=""
               >
                 {(recipes.length !== 0) ? (
-                  recipes.map((recipe, index) => {
+                  recipes.map((ele, index) => {
                     return (
-                      <Link to={`/recipe/${recipe.RecipeId}`}>
-                        <div class="uk-card" key={index}>
-                          <div class="uk-card-media-top uk-inline uk-light">
-                            <img
-                              class="uk-border-rounded-medium"
-                              src={recipe.Images.split("\n")[0].replace(/[\[\]']+/g, '')}
-                              alt="Course Title"
-                            />
-                            <div class="uk-position-cover uk-card-overlay uk-border-rounded-medium"></div>
-                            <div class="uk-position-xsmall uk-position-top-right">
-                              <a
-                                href="#"
-                                class="uk-icon-button uk-like uk-position-z-index uk-position-relative"
-                                data-uk-icon="heart"
-                              ></a>
-                            </div>
-                          </div>
-                          <div>
-                            <h3 class="uk-card-title uk-text-500 uk-margin-small-bottom uk-margin-top">
-                              {recipe.Name}
-                            </h3>
-                            <div class="uk-text-xsmall uk-text-muted" data-uk-grid="">
-                              <div class="uk-width-auto uk-flex uk-flex-middle">
-                                <StarRoundedIcon fontSize="small" color="warning" />
-                                <span class="uk-margin-xsmall-left">5.0</span>
-                                <span>({recipe.ReviewCount})</span>
-                              </div>
-                              <div class="uk-width-expand uk-text-right">
-                                by {recipe.AuthorName}
-                              </div>
-                            </div>
-                          </div>
-                          <a href="recipe.html" class="uk-position-cover"></a>
-                        </div>
+                      <Link to={`/recipe/${ele.RecipeId}`}>
+
+                        <ItemGrid
+                      key={index}
+                      // onClick={()=>handleClick(index)}
+                      name={ele.Name}
+                      image={ele.Images}
+                      rating={
+                        ele.AvgRating == null
+                          ? 0
+                          : Number(ele.AvgRating).toFixed(1)
+                      }
+                      comment={ele.Comment}
+                      date={ele.Date}
+                      author={ele.AuthorName}
+                    />
                       </Link>
                     )
                   })) : (<GreyTextTypography variant="h7">
