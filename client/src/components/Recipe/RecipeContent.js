@@ -146,7 +146,7 @@ export default function RecipeContent({recipe,reviews,submitComment,star,setStar
                                         <a class="uk-link-reset" href="#">
                                           {getFormattedDate(
                                             new Date(ele.DateSubmitted)
-                                          )}
+                                          ).substring(0,10)}
                                         </a>
                                       </p>
                                       <Rating
