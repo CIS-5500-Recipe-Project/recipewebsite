@@ -108,7 +108,7 @@ export default function Recipes() {
           </div>
           <div class="uk-width-expand@m uk-margin-medium-top">
             <div class="uk-text-large uk-text-bold uk-margin-small-bottom uk-margin-top">
-                Top 30 {selection} recipes
+                Top {selection} recipes
             </div>
             <div
               class="uk-child-width-1-2 uk-child-width-1-3@s"
