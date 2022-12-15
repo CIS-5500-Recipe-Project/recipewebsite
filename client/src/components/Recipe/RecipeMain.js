@@ -5,7 +5,7 @@ import "uikit/dist/js/uikit.js";
 import Rating from '@mui/material/Rating';
 import Card from '@mui/material/Card';
 import React from 'react';
-import { CardContent, CardActionArea, Typography, CardMedia, Modal, Divider, List, ListItem, ListItemText, Tooltip } from "@mui/material";
+import { CardContent, CardActionArea, Typography, Modal, Divider, List, ListItem, ListItemText, Tooltip } from "@mui/material";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { useState } from 'react';
