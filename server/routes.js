@@ -63,9 +63,10 @@ async function recipes(req, res) {
         SELECT RecipeId,  (FatContent+SaturatedFatContent)/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS FatRatio,       ProteinContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS ProteinRatio,       CarbohydrateContent/(FatContent+SaturatedFatContent+CarbohydrateContent+ProteinContent) AS CarbohydrateRatio
         FROM recipes
         )
-       SELECT recipes.RecipeId, recipes.Name, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
+       SELECT recipes.RecipeId, recipes.Name, u.AuthorName, recipes.Images,AVG(reviews.Rating) as AvgRating, COUNT(reviews.RecipeId) as Comment, recipes.DatePublished as Date
        FROM recipes JOIN DietTable ON recipes.RecipeId = DietTable.RecipeId
        LEFT JOIN reviews ON reviews.RecipeId = recipes.RecipeId
+       JOIN users u on u.AuthorId = recipes.AuthorId
        WHERE (FatRatio BETWEEN 0.6 AND 0.7) AND (ProteinRatio BETWEEN 0.2 AND 0.35) AND (CarbohydrateRatio BETWEEN 0.05 AND 0.1) or recipes.Name like '%keto%'
        GROUP BY recipes.RecipeId
        ORDER BY AvgRating DESC, Comment Desc, Date DESC
