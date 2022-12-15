@@ -230,16 +230,7 @@ async function searchCount(req, res) {
 async function recommendation(req, res) {
     var x = parseInt(req.params.recipeId);
 
-    var complexQuery = `WITH review_authors AS (
-        select AuthorId
-        FROM reviews
-        where RecipeId = ${x}
-        ),
-        other_recipes AS (
-            select RecipeId
-            FROM reviews
-            WHERE AuthorId in (select * from review_authors)
-        ),
+    var complexQuery = `WITH 
         recipe_category AS (
             SELECT RecipeCategory AS category
             FROM recipes
@@ -251,10 +242,10 @@ async function recommendation(req, res) {
             WHERE RecipeID = ${x})
         SELECT distinct recipes.RecipeId, recipes.Name, u.AuthorName,recipes.Images,AVG(reviews.Rating) as AvgRating,COUNT(reviews.RecipeId) as Comment,recipes.DatePublished as Date
         from recipes
-        LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
+        JOIN reviews on recipes.RecipeId = reviews.RecipeId
         JOIN users u on recipes.AuthorId = u.AuthorId
-        where ((recipes.RecipeId in (select * from other_recipes) and recipes.RecipeId <> ${x})) or (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient)))
-        GROUP BY reviews.RecipeId
+        where (RecipeCategory = (select * from recipe_category) OR (RecipeIngredientParts && (select * from recipe_ingredient))) and recipes.RecipeId <> ${x}
+        GROUP BY recipes.RecipeId
         order by Comment desc
         limit 8;`;
 
