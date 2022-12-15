@@ -85,8 +85,6 @@ async function recipes(req, res) {
         connection.query(breakfast_brunch_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                // console.log(results);
-                // console.log(results);
                 res.json(results);
             }
         });
@@ -94,8 +92,6 @@ async function recipes(req, res) {
         connection.query(appetizer_snack_query, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                // console.log(results);
-                // console.log(results);
                 res.json(results);
             }
         });
@@ -139,7 +135,6 @@ async function pageTwo(req, res) {
 //Route 2: Recipe Page - get all info of a recipe by RecipeId
 async function recipe(req, res) {
     var x = parseInt(req.params.recipeId);
-    console.log(typeof x);
     var queryRecipeWithId = `SELECT *, u.AuthorName, AVG(reviews.Rating) as AggregatedRating,COUNT(reviews.RecipeId) as Comment
     FROM recipes
     LEFT JOIN reviews on recipes.RecipeId = reviews.RecipeId
@@ -149,7 +144,6 @@ async function recipe(req, res) {
 
     if (x) {
         connection.query(queryRecipeWithId, function (err, results, fields) {
-            console.log(typeof req.params.recipeId);
             if (err) console.log(err);
             else {
                 // console.log(results);
@@ -162,7 +156,6 @@ async function recipe(req, res) {
 //Route 3: Recipe Page - get all comments per RecipeId
 async function reviews(req, res) {
     var x = parseInt(req.params.recipeId);
-    // console.log(typeof x);
     var query = `SELECT reviews.ReviewId, reviews.RecipeId, reviews.AuthorId, users.AuthorName, Rating, Review, DateSubmitted
     FROM reviews
     JOIN users on reviews.AuthorId = users.AuthorId
@@ -171,10 +164,8 @@ async function reviews(req, res) {
 
     if (x) {
         connection.query(query, function (err, results, fields) {
-            console.log(typeof req.params.recipeId);
             if (err) console.log(err);
             else {
-                // console.log(results);
                 res.json(results);
             }
         });
@@ -189,7 +180,6 @@ async function search(req, res) {
     // 1=date
     // 2=rating
     // 3=comment
-    //   console.log(req.query);
     var defaultSort = "recipes.DatePublished DESC";
     if (sort == 2) {
         defaultSort = "AvgRating DESC, Comment DESC";
@@ -211,7 +201,6 @@ async function search(req, res) {
     connection.query(query, function (err, results, fields) {
         if (err) console.log(err);
         else {
-            // console.log;
             res.json(results);
         }
     });
@@ -219,7 +208,6 @@ async function search(req, res) {
 
 //Route 5: Search Page - get search results count
 async function searchCount(req, res) {
-    //   console.log(req.query);
     const keyword = req.params.keyword ? req.params.keyword : "";
 
     var query = `SELECT COUNT(*) as Total
@@ -230,7 +218,6 @@ async function searchCount(req, res) {
     connection.query(query, function (err, results, fields) {
         if (err) console.log(err);
         else {
-            // console.log;
             res.json(results);
         }
     });
@@ -275,7 +262,6 @@ async function recommendation(req, res) {
         connection.query(complexQuery, function (err, results, fields) {
             if (err) console.log(err);
             else {
-                // console.log(results);
                 res.json(results);
             }
         });
@@ -304,7 +290,6 @@ async function homePage_RecentlyPopular(req, res) {
     connection.query(Query, function (err, results, fields) {
         if (err) console.log(err);
         else {
-            // console.log(results);
             res.json(results);
         }
     });
@@ -350,8 +335,6 @@ async function homePage_TodaySelected(req, res) {
     connection.query(Query, function (err, results, fields) {
         if (err) console.log(err);
         else {
-            // console.log(str);
-            // console.log(results);
             res.json(results);
         }
     });
@@ -379,12 +362,10 @@ async function postComment(req, res) {
     const recipeId = parseInt(req.body.recipeId);
     const name = req.body.name
     const comment = req.body.comment
-    // INSERT INTO reviews (RecipeId, AuthorName, Rating, Review, DateSubmitted, DateModified)
 
     var register_query = `INSERT INTO users (AuthorId, AuthorName, email, password)
     VALUES(null, '${name}', 'test', 'test');`;
     
-    // console.log(Query)
     connection.query(register_query, function (err, results) {
         if (err) console.log(err);
         else {

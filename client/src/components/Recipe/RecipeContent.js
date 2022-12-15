@@ -9,24 +9,16 @@ import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import { getFormattedDate } from "../helper";
 
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
 
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
+import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 
-export default function RecipeContent({recipe,reviews,submitComment,star,setStar,}) {
+export default function RecipeContent({recipe,reviews,commentName,setCommentName,commentContent,setCommentContent,submitComment,star,setStar,}) {
   //recipe instruction
   const instrunction_str = recipe[0].RecipeInstructions;
   const instructions = instrunction_str.substring(1, instrunction_str.length - 1).split("\n");
@@ -184,10 +176,16 @@ export default function RecipeContent({recipe,reviews,submitComment,star,setStar
               <h3>Leave your comment</h3>
               <div class="comment-box">
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   sx={{ width: "25ch" }}
                   id="comment-name"
                   label="Name"
+                  placeholder="Leave your name..."
                   variant="outlined"
+                  value={commentName}
+                  onChange={(event, newValue) => {
+                    setCommentName(newValue);
+                  }}
                 />
                 <div class="comment-box-star">
                   Rating:
@@ -199,19 +197,25 @@ export default function RecipeContent({recipe,reviews,submitComment,star,setStar
                     }}
                   />
                 </div>
-              </div>
-              <div class="uk-margin-medium-bottom">
+                <div class="uk-margin-medium-bottom">
                 <TextField
+                  InputLabelProps={{ shrink: true }}
                   fullWidth
                   id="comment-detail"
-                  label="Leave your comment..."
-                  placeholder="Placeholder"
+                  label="Comment"
+                  placeholder="Leave your comment..."
+                  value={commentContent}
+                  onChange={(event, newValue) => {
+                    setCommentContent(newValue);
+                  }}
                   multiline
                 />
               </div>
-              <Button onClick={submitComment} variant="contained">
+              <Button style={{width: "100px"}} onClick={submitComment} variant="contained">
                 Submit
               </Button>
+              </div>
+              
             </div>
           </div>
           <div class="uk-width-1-3@m">

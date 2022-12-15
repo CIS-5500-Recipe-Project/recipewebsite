@@ -12,8 +12,7 @@ import { useState } from 'react';
 
 export default function RecipeMain({ recipe }) {
   const imgs = recipe[0].Images.split("\n");
-  console.log("images" + imgs);
-  console.log("typeof: " + typeof imgs);
+  
   const indexImg = imgs.length - 1 > 1 ? 1 : 0
 
   const [show, setShow] = useState(false);
